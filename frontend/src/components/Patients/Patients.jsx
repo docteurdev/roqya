@@ -3,23 +3,34 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import {EyeIcon } from '@heroicons/react/24/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPatient } from '../../redux/patients';
+import Details from '../patientDetail/Details';
 
 
 function Patients() {
 
-    const [rowData] = useState([
-        {Numero: 1, Nom: "Toyota", Prenom: "Celica", },
-        {Numéro: 2, Nom: "Ford", Prenom: "Mondeo", },
-        {Numéro: 3, Nom: "Porsche", Prenom: "Boxster", }
-    ]);
+    const patients = useSelector(state => state.patients.pats);
+    // console.log(patients);
 
+    const [rowData] = useState(patients);
+    const dispatch = useDispatch();
+
+    
     const CellBtn = ({num}) =>{
-        return <button style={{backgroundColor:'white'}} onClick={() => console.log(num)}>
-             <EyeIcon className="block h-6 w-6 hover:"/></button>
+        return <label 
+          onClick={() => {
+              dispatch(getPatient(num))
+              document.getElementById("patient-popup").click() ;
+            //   console.log(num);
+        }}
+          className=' bg-slate-500 text-white rounded-lg p-2 cursor-pointer' 
+          
+           >Voir fiche</label>
     }
     
     const [columnDefs] = useState([
-        { field: 'Numero', resizeable:true, filter: 'agNumberColumnFilter',  width:80, headerName:'N°' },
+        { field: 'id', resizeable:true, filter: 'agNumberColumnFilter',  width:80, headerName:'N°' },
         { field: 'Nom', resizeable:true, filter:true ,},
         { field: 'Prenom', resizeable:true, filter:true },
         { field: 'Contact', resizeable:true, filter: 'agNumberColumnFilter' },
@@ -30,15 +41,17 @@ function Patients() {
 
   return (
     <div className="ag-theme-alpine" style={{height: '60vh', width: '100%'}}>
-                    <label htmlFor="my-modal" >open modal</label>
+                    
+<label className='hidden' id="patient-popup"  htmlFor="patient-detail-modal"></label>
 
-<input type="checkbox" id="my-modal" className="modal-toggle" />
-<div className="modal">
-<div className="modal-box">
-    <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
-    <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
+<input type="checkbox" id="patient-detail-modal" className="modal-toggle" />
+<div className="modal backdrop-blur-sm">
+<div className="modal-box w-8/12 max-w-5xl h-auto">
+
+     <Details/>
+
     <div className="modal-action">
-    <label htmlFor="my-modal" className="btn">Yay!</label>
+    <label htmlFor="patient-detail-modal" className="btn">Yay!</label>
     </div>
 </div>
 </div>
