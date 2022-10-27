@@ -1,0 +1,12 @@
+.carousel{
+    border: 1px solid ;
+    width: 600px;
+    height: 500px;
+    /* display: flex;
+    justify-content: center; */
+}
+
+.max-w-md{
+    border: 1px solid ;
+     width: 100% !important;
+}
