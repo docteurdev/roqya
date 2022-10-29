@@ -24,7 +24,7 @@ function Patients() {
               document.getElementById("patient-popup").click() ;
             //   console.log(num);
         }}
-          className=' bg-slate-500 text-white rounded-lg p-2 cursor-pointer' 
+          className=' bg-gray-800 font-semibold text-xs text-white rounded-lg p-2 cursor-pointer' 
           
            >Voir fiche</label>
     }

@@ -9,7 +9,8 @@ import {
   ClipboardDocumentListIcon,
   PhoneIcon,
   UsersIcon,
-  ChartPieIcon
+  ChartPieIcon,
+  ChevronDownIcon, ChevronUpIcon
 } from "@heroicons/react/24/outline";
 import SmallCard from "../../components/card/SmallCard";
 import image from "../../assets/roqya.jpg";
@@ -35,21 +36,38 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const RakisItem = () =>{
+    return(
+        <div className="
+        text-gray-800 text-left my-1 w-full 
+        border-2 border-gray p-1 
+        rounded-md hover:bg-gray-800 
+        hover:text-white
+        ">
+            <h3 className="font-semibold">Arouna Koné</h3>
+            <h3 className="text-sm font-medium">45 85 63 952</h3>
+        </div>
+    )
+}
+
+
 function Dash() {
   const [stat, setStat] = useState(false);
 
-  
+  const [showRakis, setshowRakis]= useState(false)
+
 
   return (
     <div className="min-h-full">
 
 <input type="checkbox" id="my-modal" className="modal-toggle" />
-<div className="modal">
-<div className="modal-box w-11/12 max-w-5xl">
+<div className="modal bg-white-100 backdrop-blur-sm">
+<div className="modal-box w-11/12 max-w-5xl ">
     {/* <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
     <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
     <div className="modal-action">
@@ -67,9 +85,9 @@ function Dash() {
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <img
-                      className="h-8 w-8"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
+                      className="h-8 w-8 rounded-lg"
+                      src={image}
+                      alt=""
                     />
                   </div>
                   <div className="hidden md:block">
@@ -224,18 +242,23 @@ function Dash() {
       </Disclosure>
 
       <main className="relative">
-        <div className="absolute z-10 top-0 left-0 mx-auto w-full py- sm:px-6 lg:px-8">
+        <div className="absolute z-10 top-0 left-0 w-full shadow bg-white-100 backdrop-blur-sm sm:px-6 lg:px-8">
           {stat ? (
-            <div className="stat w-full shadow bg-white-100 backdrop-blur-sm">
-              <SmallCard />
+            <div className="flex justify-center gap-2 stat w-full ">
+              <SmallCard title="Hommes" />
+              <SmallCard title="Femmes" />
+              <SmallCard title="Enfants" />
+              <SmallCard title="Musulmans" />
+              <SmallCard title="Chrétiens" />
+              <SmallCard title="Animistres" />
             </div>
           ) : null}
         </div>
         <div className="grid  grid-cols-[200px_minmax(600px,_1fr)_300px] pt-8 ">
           <div className="h-[90vh] ">
-            <div className="h-48 ml-1 rounded-md border-solid border-2 px-4 w-full">
-              <div className="w-[45px] h-[45px] border-solid border-2 rounded-full">
-                <img src={image} alt="" />
+            <div className="h-48 ml-1 bg-gray-800 text-white rounded-md border-solid border-2 px-4 w-full">
+              <div className="w-[45px] mt-2 h-[45px] overflow-hidden border-solid border-2 rounded-full">
+                <img src={user.imageUrl} alt="" />
               </div>
               <div className="flex mt-2">
                 <UserIcon className="h-6 w-6" />
@@ -254,7 +277,40 @@ function Dash() {
           <div className="px-4 ">
             <Patients />
           </div>
-          <div className=" ">68464646</div>
+          <div className=" bg-gray-800 w-68 h-[65%] p-2 text-white rounded-md mx-2 ">
+          
+          <h3 className="font-semibold text-left text-sm">Sécrétaire active</h3>
+
+            <div className="flex items-center gap-2">
+              <div className="w-[45px] mt-2 h-[45px] overflow-hidden border-solid border-2 rounded-full">
+                <img src={user.imageUrl} className="" alt="" />
+              </div>
+                <h3 className="font-semibold text-xs"> Fatima wara</h3>
+            </div>
+
+          <h3 className="font-semibold mt-3 text-left text-sm">Rakis du centre</h3>
+          <div className="w-full h-8 mt-2 bg-white  rounded-full flex justify-between items-center">
+            <div className="w-8 h-8 rounded-full bg-gray-800 border-2 border-white">
+
+            </div>
+            {!showRakis? <ChevronDownIcon
+             onClick={() => setshowRakis(!showRakis)}
+              className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
+              />
+              :
+            <ChevronUpIcon
+             onClick={() => setshowRakis(!showRakis)}
+              className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
+              />}
+          </div>
+          {showRakis? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
+            {/* local component */}
+            <RakisItem/>
+            <RakisItem/>
+            <RakisItem/>
+          </div>: null}
+
+          </div>
         </div>
       </main>
     </div>
