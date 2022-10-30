@@ -30,7 +30,7 @@ function Patients() {
 
   return (
     <div className="ag-theme-alpine" style={{height: '60vh', width: '100%'}}>
-                    <label htmlFor="my-modal" >open modal</label>
+                    {/* <label htmlFor="my-modal" >open modal</label> */}
 
 <input type="checkbox" id="my-modal" className="modal-toggle" />
 <div className="modal">
