@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    // colors:{
+    //   "ee": "red"
+    // }
   },
   plugins: [require("daisyui")],
 }
