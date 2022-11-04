@@ -1,21 +1,37 @@
-const {createSlice, configureStore} = require('@reduxjs/toolkit');
+import axios from 'axios';
+
+const {createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
+
+export const getPatients = createAsyncThunk("patients/getPatients", async() =>{
+  const patients =  axios.get("http://localhost:3001/api/roqya_ci/getAll_patients")
+                    .then(res =>{return res.data.data})
+                    .catch(error => console.log(error) )
+    return patients;
+}) 
 
 const patientsSlice = createSlice({
     name: "patients",
     initialState:{
-        pats:[
-        {id:1, Nom:"eba", Prenom: "modibo", Contact: "01245333"},
-        {id:2, Nom:"molk", Prenom: "charles", Contact: "01245333"},
-        {id:3, Nom:"drago", Prenom: "fola", Contact: "01245333"},
-        {id:4, Nom:"kaba", Prenom: "too", Contact: "01245333"},
-        {id:5, Nom:"prao", Prenom: "dah", Contact: "01245333"},
-        ],
+        pats:[],
         patient:{}
 },
     reducers:{
         getPatient:(state, action) =>{
            state.patient= action.payload;
              
+        }
+    },
+    extraReducers:{
+        [getPatients.pending]:() =>{
+            console.log("pending");
+        },
+
+        [getPatients.fulfilled]: (state, {payload}) =>{
+              state.pats= payload;
+        },
+
+        [getPatients.rejected]: () =>{
+            console.log("call is rejected");
         }
     }
 })

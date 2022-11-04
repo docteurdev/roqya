@@ -1,142 +1,188 @@
+import axios from "axios";
 import React from "react";
+import { useState } from "react";
+import { TextArea } from ".";
+import { getPatients } from "../redux/patients";
 import Input from "./input/Input";
 
-function addPatientForm({closePop}) {
-  return (
-    <div>
-      <form onSubmit={(e) => e.preventDefault()} >
-        <div className="shadow sm:overflow-hidden sm:rounded-md">
-          <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-            {/* <div className="grid grid-cols-3 gap-6">
-                    <div className="col-span-3 sm:col-span-2">
-                      <label htmlFor="company-website" className="block text-sm font-medium text-gray-700">
-                        Website
-                      </label>
-                      <div className="mt-1 flex rounded-md shadow-sm">
-                        <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                          http://
-                        </span>
-                        <input
-                          type="text"
-                          name="company-website"
-                          id="company-website"
-                          className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          placeholder="www.example.com"
-                        />
-                      </div>
+function AddPatientForm({ closePop }) {
+
+  const [nom, setNom] = useState("");
+  const [prenom, setpreNom] = useState("");
+  const [naissance, setnaissance] = useState("");
+  const [contact, setcontact] = useState("");
+  const [profession, setprofession] = useState("");
+  const [religion, setreligion] = useState("");
+  const [sexe, setsexe] = useState("");
+  const [ant_medical, setant_medical] = useState("");
+  const [s_matrimoniale, sets_matrimoniale] = useState("");
+
+
+  const newPatient = (e) => {
+    getPatients();
+    e.preventDefault();
+    const data = {
+        centreId: 1,
+        patient: {
+        nom: nom,
+        prenom: prenom,
+        date_naissance: naissance,
+        sexe: "M",
+        profession: profession,
+        contact: contact,
+        religion: religion,
+        s_matrimoniale: "c",
+        ante_medicaux: "rien"
+      }
+    }
+    axios.post("http://localhost:3001/api/roqya_ci/carnet_create", data)
+         .then(res => console.log(res.data) )
+         .catch(error => console.log(error) )
+  
+  }
+
+    return (
+      <div>
+        <form onSubmit={newPatient} >
+          <div className="shadow sm:overflow-hidden sm:rounded-md">
+            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+              <div className="grid grid-cols-6 gap-6">
+
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={nom}
+                    setValue={setNom}
+                    label="Nom"
+                    type="text" />
+                </div>
+                {/* <Input/> */}
+
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={prenom}
+                    setValue={setpreNom}
+                    label="Prenom"
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={naissance}
+                    setValue={setnaissance}
+                    label="Date de naissance"
+                    type="date" />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <div className="flex">
+                    <label htmlFor="">sexe:</label>
+                    <div className="flex  gap-4 ml-6">
+                      <label htmlFor="">Masculin</label>
+
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio radio-primary"
+                      // checked
+                      />
+                      <label htmlFor="">Féminin</label>
+
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio radio-secondary"
+                      />
                     </div>
-                  </div> */}
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Nom" type="text" />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Prenom" type="text" />
-              </div>
-            </div>
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Date de naissance" type="date" />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <div className="flex">
-                  <label htmlFor="">sexe:</label>
-                  <div className="flex  gap-4 ml-6">
-                    <label htmlFor="">Masculin</label>
-
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-primary"
-                      // checked
-                    />
-                    <label htmlFor="">Féminin</label>
-
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-secondary"
-                    />
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Profession" type="text" />
-              </div>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={profession}
+                    setValue={setprofession}
+                    label="Profession"
+                    type="text" />
+                </div>
 
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Contact" type="text" />
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={contact}
+                    setValue={setcontact}
+                    label="Contact"
+                    type="text"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <Input label="Réligion" type="text" />
-              </div>
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <Input
+                    value={religion}
+                    setValue={setreligion}
+                    label="Réligion"
+                    type="text"
+                  />
+                </div>
 
-              <div className="col-span-6 sm:col-span-3">
-                <div className="flex">
-                  <label htmlFor="">Situation matrimoniale:</label>
-                  <div className="flex  gap-2 ml-6">
-                    <label htmlFor="">C</label>
+                <div className="col-span-6 sm:col-span-3">
+                  <div className="flex">
+                    <label htmlFor="">Situation matrimoniale:</label>
+                    <div className="flex  gap-2 ml-6">
+                      <label htmlFor="">C</label>
 
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-secondary-focus"
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio radio-secondary-focus"
                       // checked
-                    />
-                    <label htmlFor="">M</label>
+                      />
+                      <label htmlFor="">M</label>
 
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-accent"
-                    />
-                    <label htmlFor="">D</label>
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio radio-accent"
+                      />
+                      <label htmlFor="">D</label>
 
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio radio-secondary"
-                    />
-                    <label htmlFor="">V</label>
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio radio-secondary"
+                      />
+                      <label htmlFor="">V</label>
 
-                    <input
-                      type="radio"
-                      name="radio-2"
-                      className="radio checked:bg-blue-500"
-                    />
+                      <input
+                        type="radio"
+                        name="radio-2"
+                        className="radio checked:bg-blue-500"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/*  */}
+              {/*  */}
 
-            <div>
-              <label
-                htmlFor="about"
-                className="block text-sm font-medium text-ee"
-              >
-                Antécédant médical
-              </label>
-              <div className="mt-1">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-2 px-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder="Antécédant médical"
-                  defaultValue={""}
-                />
+              <div>
+                <label
+                  htmlFor="about"
+                  className="block text-sm font-medium text-ee"
+                >
+                  Antécédant médical
+                </label>
+                <div className="mt-1">
+                  <TextArea
+                    value={ant_medical}
+                    setValue={setant_medical}
+                    placeholder="Antécédant médical"
+                  />
+                </div>
+
               </div>
-              
-            </div>
-{/* 
+              {/* 
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Photo
@@ -201,32 +247,33 @@ function addPatientForm({closePop}) {
                 </div>
               </div>
             </div> */}
-          </div>
-          <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-            <label
-             htmlFor="my-modal"
-              type="submit"
-              className="inline-flex justify-center 
+            </div>
+            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <label
+                htmlFor="my-modal"
+                type="submit"
+                className="inline-flex justify-center 
                rounded-md border cursor-pointer
                border-2 
                bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm 
                hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Annuler
-              
-            </label>
-            <label
-              type="submit"
-              htmlFor="my-modal"
-              className="inline-flex ml-4 justify-center cursor-pointer rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Enregistrer
-            </label>
-          </div>
-        </div>
-      </form>
-    </div>
-  );
-}
+              >
+                Annuler
 
-export default addPatientForm;
+              </label>
+              <label
+              onClick={newPatient}
+                type="submit"
+                htmlFor="my-modal"
+                className="inline-flex ml-4 justify-center cursor-pointer rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Enregistrer
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
+  export default AddPatientForm;

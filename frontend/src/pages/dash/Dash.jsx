@@ -10,12 +10,18 @@ import {
   PhoneIcon,
   UsersIcon,
   ChartPieIcon,
-  ChevronDownIcon, ChevronUpIcon
+  ChevronDownIcon, ChevronUpIcon,
+  UserPlusIcon
 } from "@heroicons/react/24/outline";
 import SmallCard from "../../components/card/SmallCard";
 import image from "../../assets/roqya.jpg";
 import Patients from "../../components/Patients/Patients";
 import AddPatientForm from "../../components/AddPatientForm";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getPersonals } from "../../redux/personnel";
+import { getPatients } from "../../redux/patients";
+import { AddPersonelForm } from "../../components";
 
 const user = {
   name: "Tom Cook",
@@ -31,9 +37,9 @@ const navigation = [
   { name: "Reports", href: "#", current: false },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Centre", href: "#" },
+  // { name: "Settings", href: "#" },
+  { name: "Déconnexion", href: "#" },
 ];
 
 
@@ -41,41 +47,59 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const RakisItem = () =>{
-    return(
-        <div className="
+const RakisItem = ({raki}) => {
+  return (
+    <div className="
         text-gray-800 text-left my-1 w-full 
         border-2 border-gray p-1 
         rounded-md hover:bg-gray-800 
         hover:text-white
         ">
-            <h3 className="font-semibold">Arouna Koné</h3>
-            <h3 className="text-sm font-medium">45 85 63 952</h3>
-        </div>
-    )
+      <h3 className="font-semibold"> {raki.nom} </h3>
+      <h3 className="text-sm font-medium"> {raki.contact} </h3>
+    </div>
+  )
 }
 
 
 function Dash() {
+
+
   const [stat, setStat] = useState(false);
 
-  const [showRakis, setshowRakis]= useState(false)
+  const [showRakis, setshowRakis] = useState(false);
+
+  const GetPerdispatch= useDispatch();
+  const GetPatdispatch= useDispatch();
+
+  const personnels = useSelector(state => state.personels);
+
+  
+
+  
+  useEffect(() =>{
+    GetPerdispatch(getPersonals());
+    GetPatdispatch(getPatients())
+  },[])
+
 
 
   return (
     <div className="min-h-full">
+      <input type="checkbox" id="my-modal" className="modal-toggle" />
+      <div className="modal bg-white-100 backdrop-blur-sm">
+        <div className="modal-box w-11/12 max-w-5xl ">
+          <AddPatientForm closePop="" />
+        </div>
+      </div>
 
-<input type="checkbox" id="my-modal" className="modal-toggle" />
-<div className="modal bg-white-100 backdrop-blur-sm">
-<div className="modal-box w-11/12 max-w-5xl ">
-    {/* <h3 className="font-bold text-lg">Congratulations random Internet user!</h3>
-    <p className="py-4">You've been selected for a chance to get one year of subscription to use Wikipedia for free!</p>
-    <div className="modal-action">
-    <label htmlFor="my-modal" className="btn">Yay!</label>
-    </div> */}
-    <AddPatientForm closePop="" />
-</div>
-</div>
+      <input type="checkbox" id="new-personel" className="modal-toggle" />
+      <div className="modal bg-white-100 backdrop-blur-sm">
+        <div className="modal-box w-4/12 max-w-5xl ">
+          <h2 className="text-medium font-bold">Ajouter un personel</h2>
+          <AddPersonelForm closePop="" />
+        </div>
+      </div>
 
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
@@ -92,22 +116,29 @@ function Dash() {
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
-                      <a  className="flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer">
-                       <UsersIcon className="h-6 w-6" />
-                      <span> Patients </span>
+                      <a className="flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer">
+                        <UsersIcon className="h-6 w-6" />
+                        <span> Patients </span>
                       </a>
                       <a
                         onClick={() => setStat(!stat)}
                         className="flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                       >
                         <ChartPieIcon className="h-6 w-6" />
-                       <span> Statistiques </span>
+                        <span> Statistiques </span>
                       </a>
                       <a
                         className=" flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                       >
-                        <UserIcon className="h-6 w-6"/>
-                       <label className='show-patient' htmlFor="my-modal" >Nouveau Patient</label>
+                        <UserIcon className="h-6 w-6" />
+                        <label className='show-patient' htmlFor="my-modal" >Nouveau Patient</label>
+
+                      </a>
+                      <a
+                        className=" flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
+                      >
+                        <UserPlusIcon className="h-6 w-6" />
+                        <label className='show-patient' htmlFor="new-personel" >Nouveau Personel</label>
 
                       </a>
                     </div>
@@ -144,7 +175,7 @@ function Dash() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute text-left right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
@@ -278,37 +309,39 @@ function Dash() {
             <Patients />
           </div>
           <div className=" bg-gray-800 w-68 h-[65%] p-2 text-white rounded-md mx-2 ">
-          
-          <h3 className="font-semibold text-left text-sm">Sécrétaire active</h3>
+
+            <h3 className="font-semibold text-left text-sm">Sécrétaire active</h3>
 
             <div className="flex items-center gap-2">
               <div className="w-[45px] mt-2 h-[45px] overflow-hidden border-solid border-2 rounded-full">
                 <img src={user.imageUrl} className="" alt="" />
               </div>
-                <h3 className="font-semibold text-xs"> Fatima wara</h3>
+              <h3 className="font-semibold text-xs"> Fatima wara</h3>
             </div>
 
-          <h3 className="font-semibold mt-3 text-left text-sm">Rakis du centre</h3>
-          <div className="w-full h-8 mt-2 bg-white  rounded-full flex justify-between items-center">
-            <div className="w-8 h-8 rounded-full bg-gray-800 border-2 border-white">
+            <h3 className="font-semibold mt-3 text-left text-sm">Rakis du centre</h3>
+            <div className="w-full h-8 mt-2 bg-white  rounded-full flex justify-between items-center">
+              <div className="w-8 h-8 rounded-full bg-gray-800 border-2 border-white">
 
-            </div>
-            {!showRakis? <ChevronDownIcon
-             onClick={() => setshowRakis(!showRakis)}
-              className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
+              </div>
+              {!showRakis ? <ChevronDownIcon
+                onClick={() => setshowRakis(!showRakis)}
+                className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
               />
-              :
-            <ChevronUpIcon
-             onClick={() => setshowRakis(!showRakis)}
-              className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
-              />}
-          </div>
-          {showRakis? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
-            {/* local component */}
-            <RakisItem/>
-            <RakisItem/>
-            <RakisItem/>
-          </div>: null}
+                :
+                <ChevronUpIcon
+                  onClick={() => setshowRakis(!showRakis)}
+                  className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
+                />}
+            </div>
+            {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
+              {/* local component */}
+              {
+                personnels.map((personnel, index) =><RakisItem raki={personnel} key={index} />)
+              }
+              
+              
+            </div> : null}
 
           </div>
         </div>

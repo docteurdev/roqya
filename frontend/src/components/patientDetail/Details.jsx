@@ -1,18 +1,21 @@
 import React from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import NewRdv from "../NewRdv";
 
 
-const RdvContentItem = () =>{
+const RdvContentItem = ({type}) =>{
     return(
         <div className="">
-            <button className=" bg-primary text-white rounded-xl font-semibold px-4 h-[25px] " >manger</button>
+            <button style={{backgroundColor: type ==="sorcellerie"? '#bc4e9c': type==="ventouse"? '#71B280': "#134E5E"}} className=" bg-primary text-white rounded-xl font-semibold px-4 h-[25px] " >manger</button>
         </div>
     )
 }
 
 const Rdv = () => {
   const [rdvContent, setrdvContent] = useState(false);
+
 
   return (
     <div className="">
@@ -49,25 +52,25 @@ const Rdv = () => {
              <h2 className="font-medium">Sorcelleries à traiter</h2>
             </div>
             <div className="w-screen flex flex-wrap gap-2">
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
+            <RdvContentItem type="sorcellerie"/>
                 
             </div>
          </div>
@@ -78,9 +81,9 @@ const Rdv = () => {
             </div>
             <div className="w-screen flex flex-wrap gap-2">
            
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
+            <RdvContentItem type="ventouse" />
+            <RdvContentItem type="ventouse" />
+            <RdvContentItem type="ventouse" />
                 
             </div>
          </div>
@@ -90,14 +93,14 @@ const Rdv = () => {
              <h2 className="font-medium">Rédemdes</h2>
             </div>
             <div className="w-screen flex flex-wrap gap-2">
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
-            <RdvContentItem/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
+            <RdvContentItem type="remede"/>
             
             </div>
          </div>
@@ -114,7 +117,12 @@ const Rdv = () => {
 
 
 function Details() {
+
   const [showInfo, setShowInfo] = useState(false);
+  const patient = useSelector(state => state.patients.patient);
+  // console.log(patient);
+  const [addRdv,setAddRdv]= useState(false)
+
 
   return (
     <div>
@@ -141,8 +149,8 @@ function Details() {
                 <div className="photo-box w-40 h-40 bg-primary rounded-md"></div>
                 <div className="">
                   <div className="flex justify-between  w-[18rem]">
-                    <h2 className="text-lg font-semibold ">Adje</h2>
-                    <h2 className="text-lg font-semibold ">N'guessan oumar</h2>
+                    <h2 className="text-lg font-semibold ">{patient.nom} </h2>
+                    <h2 className="text-lg font-semibold ">{patient.prenom}</h2>
                   </div>
 
                   <div className="flex justify-between items-center mt-2 w-[18rem]">
@@ -154,7 +162,7 @@ function Details() {
                         rounded-md px-6 py-2
                       "
                     >
-                      12/05/1996
+                      {patient.date_naissance}
                     </h2>
                   </div>
                   <div className="flex justify-between items-center mt-2 w-[18rem]">
@@ -166,7 +174,7 @@ function Details() {
                         rounded-md px-6 py-2
                       "
                     >
-                      Marié{" "}
+                      {patient.s_matrimoniale}
                     </h2>
                   </div>
                   <div className="flex justify-between items-center mt-2 w-[18rem]">
@@ -178,7 +186,7 @@ function Details() {
                         rounded-md px-6 py-2
                       "
                     >
-                      Muslim{" "}
+                      {patient.religion}
                     </h2>
                   </div>
                   <div className="flex justify-between items-center mt-2 w-[18rem]">
@@ -190,7 +198,7 @@ function Details() {
                         rounded-md px-6 py-2
                       "
                     >
-                      Développeur d'applis{" "}
+                      {patient.profession}
                     </h2>
                   </div>
                 </div>
@@ -253,13 +261,12 @@ function Details() {
           <h2 className="text-xl  font-semibold ">Liste de rendez-vous</h2>
           <input
             type="search"
-            placeholder="Type here"
+            placeholder="Rechercher Rdv"
             className="input w-full border-2 border-solid border-primary max-w-xs"
           />
-          {/* list rdv */}
-          <div className="">
-            <Rdv />
-          </div>
+          <button className="btn btn-primary ml-2" onClick={() => setAddRdv(!addRdv)} >{!addRdv?"Nouveau Rdv":"Voir Rdv"}</button>
+          {/* list rdv ISCompo */}
+           {addRdv? <NewRdv/> : <Rdv/>}
         </div>
       </div>
     </div>
