@@ -1,9 +1,11 @@
 const express = require('express');
 const sequelize = require('./src/db/sequelize');
+const cors = require('cors')
 
 const app = express();
 const port = 3001;
 
+app.use(cors())
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
@@ -34,6 +36,7 @@ require('./src/routes/carnet/getOne')(app);
 
 // routes rdv
 require('./src/routes/rdv/create')(app);
+require('./src/routes/rdv/getAll')(app);
 
 
 

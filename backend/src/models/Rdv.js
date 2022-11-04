@@ -16,11 +16,34 @@ module.exports= (sequelize, DataTypes) =>{
         },
         symptome:{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            // get(){
+            //     return this.getDataValue('symptome').split(',')
+            // },
+            set(symptome){
+                 this.setDataValue('symptome', symptome.join())
+            }
         },
         ventouse:{
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            // get(){
+            //     return this.getDataValue('ventouse').split(',')
+            // },
+            set(ventouse){
+                this.setDataValue('ventouse', ventouse.join())
+            }
+        },
+        remede:{
+            type: DataTypes.STRING,
+            allowNull: false,
+            // get(){
+            //     return this.getDataValue('remede').split(',')
+            // },
+
+            set(remede){
+                this.setDataValue('remede',remede.join())
+            }
         },
 
     },{
