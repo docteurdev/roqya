@@ -1,8 +1,10 @@
 import axios from 'axios';
 import React from 'react'
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { manageRem, manageSymp, manageVent } from '../redux/rdv';
+import { getPatients } from '../redux/patients';
+import { emptyedArr, manageRem, manageSymp, manageVent } from '../redux/rdv';
 import Input from './input/Input'
 import TextArea from './input/TextArea';
 
@@ -13,6 +15,16 @@ const CheckBOX = ({ value, title }) => {
     const dispatchSympt = useDispatch();
     const dispatchVent = useDispatch();
     const dispatchRem = useDispatch();
+
+    useEffect(() =>{
+        console.log(focusBtn);
+        return () =>{
+            setFocusBtn(false)
+        console.log(focusBtn);
+
+        }
+    }, [])
+    
 
     const dispRdvAction = () => {
         setFocusBtn(!focusBtn)
@@ -50,7 +62,7 @@ const CheckBOX = ({ value, title }) => {
     )
 }
 
-function NewRdv() {
+function NewRdv({closeUpNRdv}) {
 
 
     const [symptome, setSymptome] = useState([]);
@@ -61,7 +73,7 @@ function NewRdv() {
 
 
     const rakis = useSelector(state => state.personels);
-    
+    const dispatch= useDispatch()
 
     const addSymptop = ({ title }) => {
 
@@ -72,6 +84,8 @@ function NewRdv() {
         const data ={
            carnetId:patientId,
            rdv: {
+            secretaire: "salman dii",
+            rakis: raki,
             date_consultation: new Date().toLocaleDateString(),
             date_rdv: dateRdv,
             symptome: dataStored.symptomes,
@@ -80,10 +94,13 @@ function NewRdv() {
 
         }
 
-        // console.log(data);
+        console.log(data);
         axios.post("http://localhost:3001/api/roqya_ci/rdv_create", data)
              .then(res => {
                 if(res.data){
+                    dispatch(getPatients())
+                    closeUpNRdv(false)
+                    dispatch(emptyedArr())
                     document.getElementById('patient-detail-modal').click();
                 }
              })
@@ -114,7 +131,7 @@ function NewRdv() {
                             className="select mt-1 select-accent w-full max-w-xs">
                                 <option disabled selected>Selectionner un raqki </option>
                                 {
-                                    rakis.map((raki, index) => <option>{raki.nom} {raki.prenom}</option>)
+                                    rakis?.map((raki, index) => <option>{raki.nom} {raki.prenom}</option>)
                                 }
                             </select>
                         </div>

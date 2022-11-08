@@ -58,7 +58,6 @@ function Patients() {
         columnDefs={columnDefs}
 
       >
-
       </AgGridReact>
     </div>
   )

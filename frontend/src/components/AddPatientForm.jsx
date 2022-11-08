@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { TextArea } from ".";
 import { getPatients } from "../redux/patients";
 import Input from "./input/Input";
@@ -16,10 +17,11 @@ function AddPatientForm({ closePop }) {
   const [sexe, setsexe] = useState("");
   const [ant_medical, setant_medical] = useState("");
   const [s_matrimoniale, sets_matrimoniale] = useState("");
-
+ 
+  const dispatch= useDispatch()
 
   const newPatient = (e) => {
-    getPatients();
+    
     e.preventDefault();
     const data = {
         centreId: 1,
@@ -27,16 +29,21 @@ function AddPatientForm({ closePop }) {
         nom: nom,
         prenom: prenom,
         date_naissance: naissance,
-        sexe: "M",
+        sexe: sexe,
         profession: profession,
         contact: contact,
         religion: religion,
-        s_matrimoniale: "c",
+        s_matrimoniale: s_matrimoniale,
         ante_medicaux: "rien"
       }
     }
     axios.post("http://localhost:3001/api/roqya_ci/carnet_create", data)
-         .then(res => console.log(res.data) )
+         .then(res => {
+          if(res.data){
+            dispatch(getPatients());
+            document.getElementById('my-modal').click();
+          }
+         } )
          .catch(error => console.log(error) )
   
   }
@@ -85,7 +92,7 @@ function AddPatientForm({ closePop }) {
                         type="radio"
                         name="radio-2"
                         className="radio radio-primary"
-                      // checked
+                        onChange={() => setsexe("Masculin")}
                       />
                       <label htmlFor="">Féminin</label>
 
@@ -93,6 +100,8 @@ function AddPatientForm({ closePop }) {
                         type="radio"
                         name="radio-2"
                         className="radio radio-secondary"
+                        onChange={() => setsexe("Féminin")}
+
                       />
                     </div>
                   </div>
@@ -134,7 +143,8 @@ function AddPatientForm({ closePop }) {
 
                       <input
                         type="radio"
-                        name="radio-2"
+                        name="radio-smatri"
+                        onChange={() => sets_matrimoniale("Célibataire")}
                         className="radio radio-secondary-focus"
                       // checked
                       />
@@ -142,21 +152,24 @@ function AddPatientForm({ closePop }) {
 
                       <input
                         type="radio"
-                        name="radio-2"
+                        name="radio-smatri"
+                        onChange={(e) => sets_matrimoniale(sexe ==="Féminin"? "Mariée": "Marié")}
                         className="radio radio-accent"
                       />
                       <label htmlFor="">D</label>
 
                       <input
                         type="radio"
-                        name="radio-2"
+                        name="radio-smatri"
+                        onChange={() => sets_matrimoniale(sexe ==="Féminin"? "Divorcée": "Divorcé")}
                         className="radio radio-secondary"
                       />
                       <label htmlFor="">V</label>
 
                       <input
                         type="radio"
-                        name="radio-2"
+                        name="radio-smatri"
+                        onChange={() => sets_matrimoniale(sexe ==="Féminin"? "Veuve": "Veuf")}
                         className="radio checked:bg-blue-500"
                       />
                     </div>

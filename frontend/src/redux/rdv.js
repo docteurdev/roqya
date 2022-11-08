@@ -9,6 +9,15 @@ export const rdvSlice = createSlice({
     },
 
     reducers:{
+        emptyedArr(state){
+            let newSymp= [];
+            let newVent= [];
+            let newRem= [];
+
+            state.symptomes = newSymp;
+            state.ventouses = newVent;
+            state.remede = newRem;
+        },
         manageSymp(state, {payload}){
            let item = state.symptomes.includes(payload);
             if(item === true){
@@ -49,4 +58,4 @@ export const rdvSlice = createSlice({
     }
 })
 
-export const {manageRem, manageSymp, manageVent} = rdvSlice.actions;
+export const {manageRem, manageSymp, manageVent, emptyedArr} = rdvSlice.actions;
