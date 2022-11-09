@@ -5,6 +5,16 @@ module.exports= (sequelize, DataTypes) =>{
             primaryKey: true,
             autoIncrement: true,
         },
+        userName:{
+           type: DataTypes.STRING,
+           unique:{msg: "Ce nom d'utilusateur de centre existe déja choisez un nouveau"} ,
+           allowNull: false,
+
+        },
+        password:{
+           type: DataTypes.STRING,
+           allowNull: false,
+        },
         nom: {
             type: DataTypes.STRING,
             allowNull: false,

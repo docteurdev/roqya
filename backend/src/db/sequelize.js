@@ -20,16 +20,16 @@ const sequelize = new Sequelize('roqya_app', 'root', 'root', {
   const Patient = PatientModel(sequelize, DataTypes);
   const Employe = EmployeModel(sequelize, DataTypes);
   const TypeEmpl = TypeEmployeModel(sequelize, DataTypes);
-  const RendezVous = RdvModel(sequelize, DataTypes)
+  const RendezVous = RdvModel(sequelize, DataTypes);
  
   // relationship centre_patient
   Centre.hasMany(Patient);
-  // Patient.belongsTo(Centre);
+  Patient.belongsTo(Centre);
   
 
   // relationship centre_employe
 
-  Centre.hasMany(Employe);
+   Centre.hasMany(Employe);
    Employe.belongsTo(Centre);
 
   // relationship typeemploye_employe
@@ -38,8 +38,16 @@ const sequelize = new Sequelize('roqya_app', 'root', 'root', {
   // Employe.belongsTo(TypeEmpl);
   
   // relationship RendezVous Patient
-  Patient.hasMany(RendezVous);
-   RendezVous.belongsTo(Patient)
+  Patient.hasMany(RendezVous, {
+    foreignKey:'CarnetId',
+    constraints: false,
+    // scope: {
+    //   CarnetId: 'Carnet'
+    // }
+  });
+   RendezVous.belongsTo(Patient, {foreignKey: 'CarnetId', constraints: false})
+
+   
 
   // relationship patient_employe;
   const activeEmploye = sequelize.define('active_employe',{

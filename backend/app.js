@@ -38,6 +38,10 @@ require('./src/routes/carnet/getOne')(app);
 require('./src/routes/rdv/create')(app);
 require('./src/routes/rdv/getAll')(app);
 
+// login
+require('./src/routes/logins/loginCentre')(app);
+require('./src/routes/logins/loginPersonel')(app);
+
 
 
 

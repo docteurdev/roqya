@@ -14,12 +14,21 @@ module.exports= (sequelize, DataTypes) =>{
             type: DataTypes.STRING,
             allowNull: false
         },
+        secretaire:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        rakis:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         symptome:{
             type: DataTypes.STRING,
             allowNull: false,
-            // get(){
-            //     return this.getDataValue('symptome').split(',')
-            // },
+            get(){
+                const getVal = this.getDataValue('symptome')
+                return getVal?  getVal.split(','): null;
+            },
             set(symptome){
                  this.setDataValue('symptome', symptome.join())
             }
@@ -27,9 +36,10 @@ module.exports= (sequelize, DataTypes) =>{
         ventouse:{
             type: DataTypes.STRING,
             allowNull: false,
-            // get(){
-            //     return this.getDataValue('ventouse').split(',')
-            // },
+            get(){
+                const getVal= this.getDataValue('ventouse')
+                return getVal? getVal.split(','): null
+            },
             set(ventouse){
                 this.setDataValue('ventouse', ventouse.join())
             }
@@ -37,9 +47,10 @@ module.exports= (sequelize, DataTypes) =>{
         remede:{
             type: DataTypes.STRING,
             allowNull: false,
-            // get(){
-            //     return this.getDataValue('remede').split(',')
-            // },
+            get(){
+                const getVal= this.getDataValue('remede')
+                return getVal?  getVal.split(','): null
+            },
 
             set(remede){
                 this.setDataValue('remede',remede.join())
