@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { TextArea } from ".";
 import { getPatients } from "../redux/patients";
 import Input from "./input/Input";
+import {Loading} from "./index"
 
 function AddPatientForm({ closePop }) {
 
@@ -17,12 +18,15 @@ function AddPatientForm({ closePop }) {
   const [sexe, setsexe] = useState("");
   const [ant_medical, setant_medical] = useState("");
   const [s_matrimoniale, sets_matrimoniale] = useState("");
+
+  const [load, setLoad] = useState(false)
  
   const dispatch= useDispatch()
 
   const newPatient = (e) => {
     
     e.preventDefault();
+    setLoad(true)
     const data = {
         centreId: 1,
         patient: {
@@ -41,6 +45,7 @@ function AddPatientForm({ closePop }) {
          .then(res => {
           if(res.data){
             dispatch(getPatients());
+            setLoad(false)
             document.getElementById('my-modal').click();
           }
          } )
@@ -49,7 +54,9 @@ function AddPatientForm({ closePop }) {
   }
 
     return (
+      <>
       <div>
+       {load? <Loading/>: null}
         <form onSubmit={newPatient} >
           <div className="shadow sm:overflow-hidden sm:rounded-md">
             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
@@ -286,6 +293,7 @@ function AddPatientForm({ closePop }) {
           </div>
         </form>
       </div>
+      </>
     );
   }
 

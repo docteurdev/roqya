@@ -74,7 +74,6 @@ function Dash() {
 
   const personnels = useSelector(state => state.personels);
 
-  
 
   
   useEffect(() =>{
@@ -337,7 +336,8 @@ function Dash() {
             {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
               {/* local component */}
               {
-                personnels.map((personnel, index) =><RakisItem raki={personnel} key={index} />)
+                personnels.filter(raki => raki.typeEmploye ==="raki")
+                .map((personnel, index) =><RakisItem raki={personnel} key={index} />)
               }
               
               

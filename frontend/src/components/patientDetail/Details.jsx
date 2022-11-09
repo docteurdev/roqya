@@ -185,7 +185,7 @@ function Details() {
                         rounded-md px-6 py-2
                       "
                     >
-                      {patient.profession}
+                      {patient?.profession}
                     </h2>
                   </div>
                 </div>
@@ -240,7 +240,10 @@ function Details() {
               <h2 className="text-xl text-left mt-2 font-semibold ">
                 Antécédent médical
               </h2>
-              <div className="bg-slate-100 w-full mt-2 h-48"></div>{" "}
+              <div className="bg-slate-100 w-full mt-2 h-48">
+              {patient?.ante_medicaux}
+
+                </div>{" "}
             </div>
           ) : null}
         </div>
