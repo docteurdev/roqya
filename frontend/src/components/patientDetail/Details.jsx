@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import NewRdv from "../NewRdv";
+import Loading from "../common/Loading";
 
 
 const RdvContentItem = ({ type, value }) => {
@@ -21,13 +22,13 @@ const Rdv = ({ rdv }) => {
     <div className="">
       <div style={{ minHeight: rdvContent ? 200 : 50, }} className="w-full p-2 transition-height rounded-lg mt-2 border-2 border-solid">
         <div className="rdv-header  flex justify-between items-center ">
-          <h2 className="text-lg text-lef font-normal flex items-center ">
-            <span className="font-semibold mr-2">Date:</span> <span> {rdv.date_rdv} </span>
+          <h2 className="text-lg text-lef font-normal flex items-center w-4/12 ">
+            <span className="font-semibold mr-2">Date consultation:</span> <span> {rdv.date_consultation} </span>
           </h2>
-          <h2 className="text-lg text-lef font-normal flex items-center ">
+          <h2 className="text-lg text-lef font-normal flex items-center w-4/12">
             <span className="font-semibold mr-2">Sécrétaire:</span> <span>{rdv.secretaire} </span>
           </h2>
-          <h2 className="text-lg text-lef font-normal">
+          <h2 className="text-lg text-lef font-normal w-4/12">
             <span className="font-semibold mr-2">Raki:</span> <span> {rdv.rakis} </span>
           </h2>
           <h2>
@@ -103,13 +104,15 @@ function Details() {
   const patient = useSelector(state => state.patients.patient);
   // console.log(patient);
   const [addRdv, setAddRdv] = useState(false);
+  const [load, setload] = useState(false);
 
   
   return (
     <div>
       <div className="detail p-6">
-        <div className="hearder relative">
-          <h2 className="flex fixed top-0 left-0 p-2  w-full justify-betwee text-xl text-left mb-4 font-semibold flex items-center ">
+      {/* {load ? <Loading /> : null} */}
+        <div className=" hearder ">
+          <h2 className="flex w-full text-xl text-left mb-4 font-semibold flex items-center ">
             <p>Afficher les informations du patient</p>
             <div style={{width:"50%"}} className="flex justify-between items-center">
             {!showInfo ? (
@@ -251,15 +254,13 @@ function Details() {
           <h2 className="text-xl  font-semibold ">Liste de rendez-vous</h2>
           <input
             type="search"
-            placeholder="Rechercher Rdv"
+            placeholder="Rechercher consultation"
             className="input w-full border-2 border-solid border-primary max-w-xs"
           />
-          <button className="btn btn-primary ml-2" onClick={() => setAddRdv(!addRdv)} >{!addRdv ? "Nouveau Rdv" : "Voir Rdv"}</button>
+          <button className="btn btn-primary ml-2" onClick={() => setAddRdv(!addRdv)} >{!addRdv ? "Nouvelle consultation" : "Voir consultations"}</button>
           {/* list rdv ISCompo */}
-          {addRdv ? <NewRdv closeUpNRdv={setAddRdv}/> :
+          {addRdv ? <NewRdv loading={setload} newrdv={setAddRdv} /> :
             patient.rdvs ? patient.rdvs.map((rdv, index) => <Rdv key={index} rdv={rdv}  />) : null
-
-
           }
         </div>: null}
       </div>

@@ -11,7 +11,8 @@ import {
   UsersIcon,
   ChartPieIcon,
   ChevronDownIcon, ChevronUpIcon,
-  UserPlusIcon
+  UserPlusIcon,
+  ArrowLeftOnRectangleIcon
 } from "@heroicons/react/24/outline";
 import SmallCard from "../../components/card/SmallCard";
 import image from "../../assets/roqya.jpg";
@@ -22,6 +23,9 @@ import { useEffect } from "react";
 import { getPersonals } from "../../redux/personnel";
 import { getPatients } from "../../redux/patients";
 import { AddPersonelForm } from "../../components";
+import UserLogin from "../../components/UserLogin";
+import { disconnectAssitant } from "../../redux/connexion";
+import { useNavigate } from "react-router-dom";
 
 const user = {
   name: "Tom Cook",
@@ -47,7 +51,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const RakisItem = ({raki}) => {
+const RakisItem = ({ raki }) => {
   return (
     <div className="
         text-gray-800 text-left my-1 w-full 
@@ -69,22 +73,30 @@ function Dash() {
 
   const [showRakis, setshowRakis] = useState(false);
 
-  const GetPerdispatch= useDispatch();
-  const GetPatdispatch= useDispatch();
+  const GetPerdispatch = useDispatch();
+  const GetPatdispatch = useDispatch();
 
   const personnels = useSelector(state => state.personels);
 
+  const navigate = useNavigate()
 
+  const isDashLogged = useSelector(state => state.login.assitantConx);
   
-  useEffect(() =>{
+  const userInfos = JSON.parse(localStorage.getItem('userInfos'));
+
+  useEffect(() => {
     GetPerdispatch(getPersonals());
     GetPatdispatch(getPatients())
-  },[])
+
+  }, [])
 
 
 
   return (
     <div className="min-h-full">
+
+      {!userInfos && isDashLogged === false ? <UserLogin /> : null}
+
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal bg-white-100 backdrop-blur-sm">
         <div className="modal-box w-11/12 max-w-5xl ">
@@ -140,6 +152,11 @@ function Dash() {
                         <label className='show-patient' htmlFor="new-personel" >Nouveau Personel</label>
 
                       </a>
+                      <a
+                        className=" flex bg-gray-900 w-15 h-15 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-full text-sm font-medium cursor-pointer"
+                      >
+                        <UserPlusIcon className="h-6 w-6" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -175,21 +192,17 @@ function Dash() {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className="absolute text-left right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          {userNavigation.map((item) => (
-                            <Menu.Item key={item.name}>
-                              {({ active }) => (
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  {item.name}
-                                </a>
-                              )}
-                            </Menu.Item>
-                          ))}
+                          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li className="text-sm font-semibold"><a>Modifier le centre</a></li>
+                            <li
+                             onClick={() =>{
+                              localStorage.removeItem('centreInfo')
+                              localStorage.removeItem('userInfos');
+                              navigate('/')
+
+                             }}
+                            className="text-sm font-semibold"><a>Déconnecter le centre?</a></li>
+                          </ul>
                         </Menu.Items>
                       </Transition>
                     </Menu>
@@ -254,16 +267,16 @@ function Dash() {
                   </button>
                 </div>
                 <div className="mt-3 space-y-1 px-2">
-                  {userNavigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
+
+                  {/* <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                  >
+                    {item.name}
+                  </Disclosure.Button> */}
+
                 </div>
               </div>
             </Disclosure.Panel>
@@ -292,15 +305,24 @@ function Dash() {
               </div>
               <div className="flex mt-2">
                 <UserIcon className="h-6 w-6" />
-                <p className="ml-2 text-xs font-semibold">Fatima wara</p>
+                <p className="ml-2 text-xs font-semibold">{userInfos?.nom} {userInfos?.prenom} </p>
               </div>
               <div className="flex mt-2">
                 <PhoneIcon className="h-6 w-6" />
-                <p className="ml-2 text-xs font-semibold">0125639+4</p>
+                <p className="ml-2 text-xs font-semibold">{userInfos?.contact}</p>
               </div>
               <div className="flex mt-2">
                 <ClipboardDocumentListIcon className="h-6 w-6" />
-                <p className="ml-2 text-xs font-semibold">Sécretaire 1</p>
+                <p className="ml-2 text-xs font-semibold">{userInfos?.typeEmploye} {userInfos?.id} </p>
+              </div>
+              <div className="flex mt-2">
+                <ArrowLeftOnRectangleIcon className="h-6 w-6" />
+                <p
+                  onClick={() => {
+                    localStorage.removeItem('userInfos')
+                    GetPerdispatch(disconnectAssitant(false))
+                  }}
+                  className="ml-2 text-xs font-semibold cursor-pointer">Déconnexion</p>
               </div>
             </div>
           </div>
@@ -336,11 +358,11 @@ function Dash() {
             {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
               {/* local component */}
               {
-                personnels.filter(raki => raki.typeEmploye ==="raki")
-                .map((personnel, index) =><RakisItem raki={personnel} key={index} />)
+                personnels.filter(raki => raki.typeEmploye === "raki")
+                  .map((personnel, index) => <RakisItem raki={personnel} key={index} />)
               }
-              
-              
+
+
             </div> : null}
 
           </div>

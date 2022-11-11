@@ -20,7 +20,7 @@ module.exports= (app) =>{
                     const message= "l'utilisateur est connecté";
                     const personelConnected= {
                         id: personel.id,
-                        typeEmploye: personel.id,
+                        typeEmploye: personel.typeEmploye,
                         userName: personel.userName,
                         password: "",
                         nom:  personel.nom  ,

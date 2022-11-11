@@ -9,6 +9,9 @@ import {Loading} from "./index"
 
 function AddPatientForm({ closePop }) {
 
+  const centreInfo= JSON.parse(localStorage.getItem('centreInfo'))
+
+
   const [nom, setNom] = useState("");
   const [prenom, setpreNom] = useState("");
   const [naissance, setnaissance] = useState("");
@@ -28,7 +31,7 @@ function AddPatientForm({ closePop }) {
     e.preventDefault();
     setLoad(true)
     const data = {
-        centreId: 1,
+        centreId: centreInfo.id,
         patient: {
         nom: nom,
         prenom: prenom,
@@ -38,7 +41,7 @@ function AddPatientForm({ closePop }) {
         contact: contact,
         religion: religion,
         s_matrimoniale: s_matrimoniale,
-        ante_medicaux: "rien"
+        ante_medicaux: ant_medical
       }
     }
     axios.post("http://localhost:3001/api/roqya_ci/carnet_create", data)

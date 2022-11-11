@@ -1,9 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const centreId = JSON.parse(localStorage.getItem('centreInfo'))
+
 export const getPersonals = createAsyncThunk("personelSlice/getPersonals", async() =>{
- const res =  axios.get("http://localhost:3001/api/roqya_ci/getAll_employe")
-  .then((res) =>{return res.data.data})
+ const res = await axios.get(`http://localhost:3001/api/roqya_ci/getAll_employe/${centreId.id}`)
+  .then((res) =>{
+    if(res.data){
+
+      return res.data.data
+    }
+  })
   .catch(error => console.log(error))
 
   return res

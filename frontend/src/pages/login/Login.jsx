@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LockClosedIcon } from '@heroicons/react/20/solid';
 import logoImg from "../../assets/roqya.jpg"
 import * as yup  from 'yup';
@@ -16,6 +16,17 @@ function Login() {
   const [loading, setLoading] =useState(false)
 
   const navigate= useNavigate();
+
+  const centerInfos = JSON.parse(localStorage.getItem('centreInfo'));
+
+
+  useEffect(() => {
+      if(centerInfos) return navigate('/board')
+    
+  
+   
+  }, [centerInfos])
+  
 
    const navLink =(route) =>{
      navigate(route)
@@ -46,10 +57,10 @@ function Login() {
     }
 
 
-  console.log(data);
   axios.post('http://localhost:3001/login/centre', data)
   .then(resp =>{
     if(resp.data){
+      localStorage.setItem('centreInfo', JSON.stringify(resp.data.data))
       navLink('/board');
       setLoading(true);
 

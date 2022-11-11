@@ -1,8 +1,8 @@
 const { Patient, RendezVous } = require("../../db/sequelize")
 
 {module.exports = (app) =>{
-    app.get('/api/roqya_ci/getAll_patients',  (req, res) =>{
-       return  Patient.findAll({include:[{model: RendezVous}]})
+    app.get('/api/roqya_ci/getAll_patients/:idcentre',  (req, res) =>{
+       return  Patient.findAll({where:{CentreId: req.params.idcentre}, include:[{model: RendezVous}]})
         .then(patients =>{
             let message;
             if(patients){

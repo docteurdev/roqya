@@ -12,18 +12,23 @@ function AddPersonelForm() {
   const [nom, setNom] = useState("");
   const [prenom, setpreNom] = useState("");
   const [contact, setcontact] = useState("");
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
   const [load, setLoad]= useState(false);
 
   const rakis = useSelector(state => state.personels);
 
   const dispatcha = useDispatch();
+  const centreInfo= JSON.parse(localStorage.getItem('centreInfo'))
 
   const newpersonel = () => {
     setLoad(true)
     let data = {
-      idCentre: 1,
+      idCentre: centreInfo.id,
       idTypeEmploye: typePersonel,
       employe: {
+        userName: username,
+        password: password,
         typeEmploye: typePersonel,
         nom: nom,
         prenom: prenom,
@@ -80,6 +85,16 @@ function AddPersonelForm() {
           value={contact}
           setValue={setcontact}
           placeholder="Contact"
+        />
+        <RegisterInput
+          value={username}
+          setValue={setusername}
+          placeholder="Nom d'utilisateur"
+        />
+        <RegisterInput
+          value={password}
+          setValue={setpassword}
+          placeholder="mot de passe"
         />
 
         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">

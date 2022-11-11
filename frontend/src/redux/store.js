@@ -1,3 +1,4 @@
+import connexionSlice from './connexion';
 import patientsSlice from './patients';
 import personelSlice from './personnel';
 import { rdvSlice } from './rdv';
@@ -8,6 +9,7 @@ export const store = configureStore({
     reducer:{
         patients: patientsSlice.reducer,
         personels: personelSlice.reducer,
-        rendezVous: rdvSlice.reducer
+        rendezVous: rdvSlice.reducer,
+        login: connexionSlice.reducer,
     }
 })
