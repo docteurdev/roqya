@@ -358,7 +358,7 @@ function Dash() {
             {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
               {/* local component */}
               {
-                personnels.filter(raki => raki.typeEmploye === "raki")
+                personnels?.filter(raki => raki.typeEmploye === "raki")
                   .map((personnel, index) => <RakisItem raki={personnel} key={index} />)
               }
 

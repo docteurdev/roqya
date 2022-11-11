@@ -6,7 +6,7 @@ import bgImg from "../../assets/caranimg.jpg";
 
 import * as yup  from 'yup';
 import {Formik} from "formik";
-import { RegisterInput } from '../../components';
+import { Loading, RegisterInput } from '../../components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +23,8 @@ function Register() {
   const [youtube, setYoutube] = useState("");
   const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
+
+  const [loading, setLoading]= useState(false);
 
   const navigate= useNavigate()
 
@@ -41,11 +43,11 @@ function Register() {
   })
 
 
- const ee = (e)=>{
-  e.preventDefault()
- }
+ 
   const register = (e ) =>{
   e.preventDefault();
+  setLoading(true)
+
   let data = {
        userName: userName,
        password: password,
@@ -59,10 +61,18 @@ function Register() {
     }
   axios.post('http://localhost:3001/api/roqya_ci/create_center', data)
   .then(resp =>{
-    console.log(resp.data);
+    if(resp.data){
+      navigate('/')
+      setLoading(false)
+      console.log(resp.data);
+    }
   })
   .catch(error =>{
-    console.log(error);
+    if(error){
+      setLoading(false)
+      console.log(error);
+
+    }
   })
     
   }
@@ -71,7 +81,8 @@ function Register() {
 
   return (
     <div style={{height: "100vh",}} className="flex justify-center p-6 items-center bg-gray-200">
-
+      
+     {loading? <Loading/>: null}
     <div style={{width: "90%", height:"90vh"}} className="flex bg-white min-h-ful rounded-lg shadow-lg gap-2 justify-center p-6 items-center  sm:px-6 lg:px-8">
       <div className="w-full  max-w-md h-46">        
         <form
