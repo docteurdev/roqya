@@ -3,8 +3,8 @@ import axios from "axios";
 
 const centreId = JSON.parse(localStorage.getItem('centreInfo'))
 
-export const getPersonals = createAsyncThunk("personelSlice/getPersonals", async() =>{
- const res = await axios.get(`http://localhost:3001/api/roqya_ci/getAll_employe/${centreId.id}`)
+export const getPersonals = createAsyncThunk("personelSlice/getPersonals", async(id) =>{
+ const res = await axios.get(`http://localhost:3001/api/roqya_ci/getAll_employe/${id}`)
   .then((res) =>{
     if(res.data){
 

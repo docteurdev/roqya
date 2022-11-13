@@ -76,7 +76,10 @@ function NewRdv({newrdv}) {
 
 
     const rakis = useSelector(state => state.personels);
+
+    const centerId= JSON.parse(localStorage.getItem('centreInfo'));
     const secretaire= JSON.parse(localStorage.getItem('userInfos'));
+
     const dispatch = useDispatch()
 
     const addSymptop = ({ title }) => {
@@ -106,7 +109,7 @@ function NewRdv({newrdv}) {
 
 
                 if (res.data) {
-                    dispatch(getPatients())
+                    dispatch(getPatients(centerId.id))
                     // loading(true)
                     newrdv(false)
                     dispatch(emptyedArr())

@@ -9,7 +9,7 @@ import logo from '../assets/roqya.jpg'
 import Loading from './common/Loading';
 
 
-function UserLogin() {
+function UserLogin({loadedDash}) {
 
     const [username, setUsername]= useState()
     const [password, setPassword]= useState();
@@ -32,6 +32,7 @@ function UserLogin() {
                     localStorage.setItem("userInfos", JSON.stringify(res.data.data));
                     dispatch(disconnectAssitant(true))
                     setLoading(false)
+                    loadedDash(true)
 
                     // console.log(res.data.data);
                 }

@@ -47,7 +47,7 @@ function AddPatientForm({ closePop }) {
     axios.post("http://localhost:3001/api/roqya_ci/carnet_create", data)
          .then(res => {
           if(res.data){
-            dispatch(getPatients());
+            dispatch(getPatients(centreInfo.id));
             setLoad(false)
             document.getElementById('my-modal').click();
           }

@@ -6,6 +6,9 @@ import {Formik} from "formik";
 import { Loading, RegisterInput } from '../../components';
 import axios from 'axios';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getPersonals } from '../../redux/personnel';
+import { getPatients } from '../../redux/patients';
 
 function Login() {
 
@@ -18,7 +21,8 @@ function Login() {
   const navigate= useNavigate();
 
   const centerInfos = JSON.parse(localStorage.getItem('centreInfo'));
-
+ 
+  const dispatch = useDispatch()
 
   useEffect(() => {
       if(centerInfos) return navigate('/board')
@@ -61,8 +65,8 @@ function Login() {
   .then(resp =>{
     if(resp.data){
       localStorage.setItem('centreInfo', JSON.stringify(resp.data.data))
-      navLink('/board');
-      setLoading(true);
+      navigate('/board', {state: resp.data.data});
+        setLoading(true);
 
       
     }

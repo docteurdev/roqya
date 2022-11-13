@@ -4,8 +4,9 @@ const {createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 const centreId = JSON.parse(localStorage.getItem('centreInfo'))
 
-export const getPatients = createAsyncThunk("patients/getPatients", async() =>{
-  const patients = await axios.get(`http://localhost:3001/api/roqya_ci/getAll_patients/${centreId.id}`)
+export const getPatients = createAsyncThunk("patients/getPatients", async(id) =>{
+
+    const patients = await axios.get(`http://localhost:3001/api/roqya_ci/getAll_patients/${id}`)
                     .then(res =>{
                         if(res.data){
 

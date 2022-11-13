@@ -40,7 +40,7 @@ function AddPersonelForm() {
       .then(res => {
 
         if(res.data){
-          dispatcha(getPersonals());
+          dispatcha(getPersonals(centreInfo.id));
         setLoad(false)
           document.getElementById('new-personel').click();
           console.log(res.data)

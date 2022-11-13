@@ -25,7 +25,7 @@ import { getPatients } from "../../redux/patients";
 import { AddPersonelForm } from "../../components";
 import UserLogin from "../../components/UserLogin";
 import { disconnectAssitant } from "../../redux/connexion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const user = {
   name: "Tom Cook",
@@ -72,9 +72,17 @@ function Dash() {
   const [stat, setStat] = useState(false);
 
   const [showRakis, setshowRakis] = useState(false);
+  const [userlogout, setUerslogout]= useState(true);
+  const [loadedDash, setloadedDash]= useState(false);
 
-  const GetPerdispatch = useDispatch();
-  const GetPatdispatch = useDispatch();
+  const userInfos = JSON.parse(localStorage.getItem('userInfos'));
+  const centreInfo = JSON.parse(localStorage.getItem('centreInfo'));
+  const loaction= useLocation()
+ 
+  // console.log('----dash load == false-------');
+  //  console.log(loaction);
+
+  const dispatch = useDispatch();
 
   const personnels = useSelector(state => state.personels);
 
@@ -82,20 +90,26 @@ function Dash() {
 
   const isDashLogged = useSelector(state => state.login.assitantConx);
   
-  const userInfos = JSON.parse(localStorage.getItem('userInfos'));
 
   useEffect(() => {
-    GetPerdispatch(getPersonals());
-    GetPatdispatch(getPatients())
+    if(!loaction.state.Employes.length){
+      setloadedDash(true)
+    }
 
-  }, [])
+  dispatch(getPersonals(loaction.state.id));
+  dispatch(getPatients(loaction.state.id))
+  
+}, [])
+
+
+
 
 
 
   return (
     <div className="min-h-full">
 
-      {!userInfos && isDashLogged === false ? <UserLogin /> : null}
+      {!loaction.state.Employes.length || loadedDash=== false? <UserLogin loadedDash={setloadedDash} /> : null}
 
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal bg-white-100 backdrop-blur-sm">
@@ -320,7 +334,8 @@ function Dash() {
                 <p
                   onClick={() => {
                     localStorage.removeItem('userInfos')
-                    GetPerdispatch(disconnectAssitant(false))
+                    dispatch(disconnectAssitant(false))
+                    setUerslogout(false)
                   }}
                   className="ml-2 text-xs font-semibold cursor-pointer">Déconnexion</p>
               </div>
@@ -355,7 +370,7 @@ function Dash() {
                   className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
                 />}
             </div>
-            {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
+            {showRakis? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
               {/* local component */}
               {
                 personnels?.filter(raki => raki.typeEmploye === "raki")
