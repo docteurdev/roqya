@@ -1,19 +1,24 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors } from './src/common/colors';
+import { useFonts } from  'expo-font';
+ import  "./assets/fonts/PlusJakartaSans-Bold.ttf";
 import NavStack from './src/routes/NavStack';
 
 export default function App() {
+
+  const [fontsLoaded]= useFonts({
+    'fontBold': require('./assets/fonts/PlusJakartaSans-Bold.ttf'),
+    'fontSemiBold': require('./assets/fonts/PlusJakartaSans-SemiBold.ttf'),
+    'fontRegular': require('./assets/fonts/PlusJakartaSans-Regular.ttf'),
+  })
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+
   return (
     <NavStack/>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
