@@ -3,6 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from  'expo-font';
  import  "./assets/fonts/PlusJakartaSans-Bold.ttf";
 import NavStack from './src/routes/NavStack';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 
 export default function App() {
 
@@ -18,7 +20,9 @@ export default function App() {
 
 
   return (
-    <NavStack/>
+    <Provider store={store}>
+      <NavStack/>
+    </Provider>
   );
 }
 

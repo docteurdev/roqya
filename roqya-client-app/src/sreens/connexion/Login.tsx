@@ -12,6 +12,7 @@ import { RootStackParamList } from '../../routes/NavStack';
 import * as Yup from "yup";
 import {useForm, Controller} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
+import { useSelector } from 'react-redux';
 
 
 const {height, width}= Dimensions.get('window');
@@ -29,6 +30,9 @@ const Login = ({navigation}: Props) => {
 const [showModal, setShowModal]= useState(false)
 const [isLoading, setIsLoading]= useState(false)
 
+const allCentres= useSelector((state: any) => state.centres);
+
+console.log(allCentres);
 
 
 const shema= Yup.object({
