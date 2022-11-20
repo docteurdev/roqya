@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { IconWrapper, InputBx, InputFeild, TextMedium } from '../common/componentStyled'
+import { IconWrapper, InputBx, InputFeild, TextMedium, TextRegular } from '../common/componentStyled'
 import { InputProps } from '../common/types';
 import { Dimensions } from 'react-native';
 import { colors } from '../common/colors';
 import { sizes } from '../common/size';
 
 const {width, height}= Dimensions.get('window')
-const CustomInput: React.FC <InputProps> = ({icon,label,secureTextEntry,...props}) => {
+const CustomInput: React.FC <InputProps> = ({icon,label,secureTextEntry,error, errorDetails,...props}) => {
     
     const [secure, setSecure]= useState(secureTextEntry)
     const [backgroundColor, setbackgroundColor]= useState(colors.white)
@@ -26,8 +26,9 @@ const CustomInput: React.FC <InputProps> = ({icon,label,secureTextEntry,...props
   return (
     <View  >
 
-      <TextMedium style={{marginVertical: 15}} >{label}</TextMedium>
-    <InputBx>
+      <TextMedium style={{marginVertical: 8}} >{label}</TextMedium>
+      {!!errorDetails && <TextRegular style={{color: colors.textDanger,}}> {errorDetails} </TextRegular>}
+      <InputBx style={{borderColor: error? colors.textDanger: colors.inputborderColor}}>
       <InputFeild
        onFocus={customFocus}
        onBlur={customBlur}

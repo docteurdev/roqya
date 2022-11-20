@@ -7,23 +7,42 @@ import { CenterList, CustomButton, CustomInput, Loading } from '../../components
 import { colors } from '../../common/colors';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routes/NavStack';
-// import logo from "../../images/roqya.jpg";
+
+// ivalidation
+import * as Yup from "yup";
+import {useForm, Controller} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+
+
 const {height, width}= Dimensions.get('window');
 
 type Props= NativeStackScreenProps<RootStackParamList, "Login">
 
 
+type ValidationType= {
+  username: string,
+  password: string
+}
 
 const Login = ({navigation}: Props) => {
 
-const [showModal, setShowModal]= useState(true)
+const [showModal, setShowModal]= useState(false)
 const [isLoading, setIsLoading]= useState(false)
 
 
 
+const shema= Yup.object({
+  username: Yup.string().required("Veuillez entrer votre nom d'utilisateur"),
+  password: Yup.string().min(4, "mot de passe trop court").required("Veuillez entrer votre mot de passe")
+}).required();
 
+const {control, handleSubmit,reset, clearErrors, formState:{errors}}= useForm<ValidationType>({resolver: yupResolver(shema)})
 
-
+const loginPatient= () =>{
+  reset()
+  console.log("patient is logged");
+  
+}
   
   return (
      <>
@@ -58,19 +77,39 @@ const [isLoading, setIsLoading]= useState(false)
         <TextRegular>Centre abobo</TextRegular>
       </BtnBx>
 
-      <CustomInput
-      label="Nom d'utilisateur" 
-       placeholder="Entrez votre nom d'utilisateur"
+      <Controller control={control} name="username" render={({field:{onChange, value}, fieldState:{error}}) =>(
+
+        <CustomInput
+        value={value}
+        label="Nom d'utilisateur" 
+         placeholder="Entrez votre nom d'utilisateur"
+         onChangeText={onChange}
+         error={!!error}
+         errorDetails={error?.message}
+        />
+      )}
+      
       />
-      <CustomInput 
-       label="Mot de passe"
-       placeholder="* * * * * * * * * "
-       icon='eye'
-       secureTextEntry={true}
+
+
+      <Controller control={control} name="password" render={({field: {onChange, value}, fieldState:{error}}) => (
+        
+        <CustomInput 
+         value={value}
+         label="Mot de passe"
+         placeholder="* * * * * * * * * "
+         icon='eye'
+         secureTextEntry={true}
+         onChangeText={onChange}
+         error={!!error}
+         errorDetails={error?.message}
+
+        />
+      )}
       />
 
     
-      <FlexWrapper style={{width: width-20, marginVertical: height*0.05,}} >
+      <FlexWrapper style={{width: width-20, marginTop: height*0.05,}} >
         <FlexWrapper>
             <MaterialIcons name="check-box" size={24} color={colors.primary} />
             <TextMedium style={{justifyContent: "center"}} > Se rappeler de moi </TextMedium>
@@ -78,9 +117,14 @@ const [isLoading, setIsLoading]= useState(false)
         </FlexWrapper>
 
       </FlexWrapper>
+      {/* { console.log(errors)} */}
+      {errors &&  Object.keys(errors).length? <TextRegular style={{color: colors.textDanger,marginBottom: 5}}>Veuillez remplir tous les champs</TextRegular>: null}
       <CustomButton
        title="Se connecter"
-       onPress={() => navigation.navigate('Home')}
+       onPress={
+        handleSubmit(loginPatient)
+        // navigation.navigate('Home')
+      }
       />
       </ScrollView>
       </View>

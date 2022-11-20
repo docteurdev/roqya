@@ -20,7 +20,9 @@ interface ExtratInput{
     secureTextEntry?: boolean;
     style?: StyleProp<TextStyle>; 
     //Icon interface
-    icon?: ComponentProps<typeof Entypo>["name"]
+    icon?: ComponentProps<typeof Entypo>["name"];
+    error?: boolean,
+    errorDetails?: string
 }
 
 // input interface
