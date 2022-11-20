@@ -28,6 +28,17 @@ export const InputBx= styled.View`
   border-radius: 16px;
   overflow: hidden;
 `
+export const BtnBx= styled.TouchableHighlight`
+  width: 100%;
+  border: 2px solid ${colors.inputborderColor};
+  background-color: ${colors.white};
+  height:52px ;
+  border-radius: 16px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+`
+
 export const InputFeild= styled.TextInput`
   border: none;
   height: 100%;

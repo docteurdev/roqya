@@ -37,7 +37,7 @@ const CustomInput: React.FC <InputProps> = ({icon,label,secureTextEntry,...props
       />
       {icon? <IconWrapper>
         <>
-        <Entypo name={!secure? icon: 'eye-with-line'} onPress={() => setSecure(!secure)} size={24} color="black" />
+        <Entypo name={!secure? icon: 'eye-with-line'} onPress={() => setSecure(!secure)} size={24} color={colors.primary} />
         </>
       </IconWrapper>: null}
     </InputBx>

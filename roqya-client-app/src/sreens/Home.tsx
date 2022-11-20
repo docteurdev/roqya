@@ -61,7 +61,7 @@ const Consultation= ({navigation, rdv}: PropsConslu) =>{
 
 const Home = ({navigation}: Props) => {
   const rdv=[
-    {date: "12/03/2021"},
+    {date: "32/03/3021"},
     {date: "03/04/2022"},
     {date: "01/01/2022"},
     {date: "17/03/2022"},
@@ -76,19 +76,17 @@ const Home = ({navigation}: Props) => {
 
 
   
-const rdvFiltered = (inputVal) =>{
-  if(!inputVal.lenght) return setrdvs(rdv)
-  
-    let rdvFiltered= rdvs.filter(rv =>  rv.date.toLocaleLowerCase().includes(inputVal.toLocaleLowerCase()))
-    
-    console.log("rdvFiltered-------------");
-    console.log(rdvFiltered);
-    if(rdvFiltered.length){
-      
-      setrdvs(rdvFiltered)
-    }
-    else{
-     setrdvs(rdv)
+const rdvFiltered = (text: string) =>{
+  setinputVal(text)
+  if(!text.length){
+    setrdvs(rdv)
+
+  } else{
+
+  //  setinputVal(text)
+   let newArr=  rdvs.filter(rdv => rdv.date.toLowerCase().includes(text.toLowerCase()))
+   return setrdvs(newArr);
+   
   }
 }
 
@@ -132,11 +130,7 @@ const rdvFiltered = (inputVal) =>{
        <Ionicons name="ios-search-outline" size={24} color={colors.textRegular} style={{position: "absolute", right: 5, top: 8}} />
         <TextInput
          value={inputVal}
-         onChangeText={(inputVal) => {
-          rdvFiltered(inputVal)
-          setinputVal(inputVal)
-          
-         }}
+         onChangeText={(text) => rdvFiltered(text)}
          placeholder='recherchez un Rdv'
          style={{
           position: 'absolute',

@@ -1,9 +1,9 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react';
+import { Dimensions, Modal, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import FormContainer from '../../components/container/FormContainer'
-import { FlexWrapper, InputBx, RoundedMd, TextLg, TextMedium, TextRegular, TextXl } from '../../common/componentStyled'
-import { CustomButton, CustomInput } from '../../components';
+import { BtnBx, FlexWrapper, InputBx, RoundedMd, TextLg, TextMedium, TextRegular, TextXl } from '../../common/componentStyled'
+import { CenterList, CustomButton, CustomInput, Loading } from '../../components';
 import { colors } from '../../common/colors';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../routes/NavStack';
@@ -15,10 +15,29 @@ type Props= NativeStackScreenProps<RootStackParamList, "Login">
 
 
 const Login = ({navigation}: Props) => {
-  return (
-      <FormContainer >
-      <View style={{flex: 1}}>
 
+const [showModal, setShowModal]= useState(true)
+const [isLoading, setIsLoading]= useState(false)
+
+
+
+
+
+
+  
+  return (
+     <>
+      {
+        isLoading? <Loading/>:
+      <FormContainer >
+      
+      <View style={{flex: 1}}>
+        <Modal
+         visible={showModal}
+         transparent
+        >
+          <CenterList isModal={setShowModal}/>
+        </Modal>
       <FlexWrapper style={{width: 200, marginVertical: width*0.1}} >
         {/* <RoundedMd>
             <Entypo name="chevron-small-left" size={24} color="black" />
@@ -30,6 +49,15 @@ const Login = ({navigation}: Props) => {
       <TextXl >Salam Aleikoum  👋🏽</TextXl>
       <TextRegular  style={{color: colors.textLightColor}}>Entrez vos identifiants après votre inscription au centre</TextRegular>
       </View>
+     
+      <TextMedium style={{marginVertical: 15}}>Selectionner votre Centre</TextMedium>
+      <BtnBx
+       underlayColor={colors.grayLiht}
+       onPress={() => setShowModal(true)}
+      >
+        <TextRegular>Centre abobo</TextRegular>
+      </BtnBx>
+
       <CustomInput
       label="Nom d'utilisateur" 
        placeholder="Entrez votre nom d'utilisateur"
@@ -44,22 +72,21 @@ const Login = ({navigation}: Props) => {
     
       <FlexWrapper style={{width: width-20, marginVertical: height*0.05,}} >
         <FlexWrapper>
-            <MaterialIcons name="check-box" size={24} color="black" />
+            <MaterialIcons name="check-box" size={24} color={colors.primary} />
             <TextMedium style={{justifyContent: "center"}} > Se rappeler de moi </TextMedium>
 
         </FlexWrapper>
-        <TextMedium style={{ color: colors.textDanger}} >Mp oublié </TextMedium>
+
       </FlexWrapper>
       <CustomButton
        title="Se connecter"
        onPress={() => navigation.navigate('Home')}
       />
-        <TextMedium style={{color: colors.textLightColor,textAlign: 'center', marginTop: 20}}> Si vous n’avez pas un compte?
-         <TextMedium style={{color: colors.textDanger}} onPress={() => navigation.navigate("Register")}>  Créer </TextMedium> </TextMedium>
-
       </ScrollView>
       </View>
-    </FormContainer>
+      </FormContainer>
+      }
+     </>
   )
 }
 
