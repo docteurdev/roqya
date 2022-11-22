@@ -1,4 +1,4 @@
-import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, BackHandler, Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { ConsulTileBx, FlexWrapper, Form, IconWrapper, TextLg, TextMedium, TextXl } from '../common/componentStyled'
 import { Entypo } from '@expo/vector-icons'
@@ -6,6 +6,7 @@ import { colors } from '../common/colors'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../routes/NavStack'
 import { RoundedBtn } from '../components'
+import { useBackHandler } from '../hooks/useBackHandler'
 
 type Props = NativeStackScreenProps<RootStackParamList, "Detail">
 
@@ -16,6 +17,9 @@ const Detail = ({ navigation, route }: Props) => {
   const consult = route.params.rdv;
   //  console.log("route.params--------------------");
   //  console.log(consult.id);
+ console.log(route.name);
+ 
+
 
   return (
     <Form

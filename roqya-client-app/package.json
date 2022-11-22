@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^2.9.10",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/datetimepicker": "6.5.2",
+    "@react-native-community/hooks": "^2.8.1",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
@@ -37,7 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@types/react": "~18.0.14",
+    "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "@types/styled-components": "^5.1.26",
     "@types/styled-components-react-native": "^5.2.0",

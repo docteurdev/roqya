@@ -1,5 +1,5 @@
-import { Dimensions, Image, StyleSheet, Keyboard, View, TextInput, TouchableWithoutFeedback, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { Dimensions, Image, StyleSheet, Keyboard, Alert, View, TextInput, TouchableWithoutFeedback, ScrollView, BackHandler } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Entypo, FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import { ConsultationStyled, FlexWrapper, Form, TextLg, TextMedium, TextRegular, TextXl } from '../common/componentStyled'
@@ -10,6 +10,7 @@ import { RootDrawerParamsList } from '../routes/DrawerNav';
 import { RootStackParamList } from '../routes/NavStack';
 import { Loading } from '../components';
 import { useSelector } from 'react-redux';
+import { useBackHandler } from '@react-native-community/hooks';
 
 
 const {width, height}= Dimensions.get('window');
@@ -19,11 +20,12 @@ type PropsConslu = NativeStackScreenProps<RootStackParamList, "Detail">
 
 const Consultation= ({navigation, rdv}: PropsConslu) =>{
  
+  // console.log(rdv);
   
 
   return(
     <ConsultationStyled
-    onPress={() => navigation.navigate("Detail", {rdv: rdv})}
+    onPress={() => navigation.push("Detail", {rdv: rdv})}
     style={{justifyContent: "space-between",  marginVertical: 7}}
     >
      <View
@@ -45,7 +47,7 @@ const Consultation= ({navigation, rdv}: PropsConslu) =>{
 
      <View>
      <TextMedium style={{color: colors.textColor}}>rendez-vous du</TextMedium>
-     <TextRegular style={{color: colors.textColor}}> {rdv.date} </TextRegular>
+     <TextRegular style={{color: colors.textColor}}> {rdv.date_consultation} </TextRegular>
      </View>
      </View>
 
@@ -60,34 +62,53 @@ const Consultation= ({navigation, rdv}: PropsConslu) =>{
   )
 }
 
-const Home = ({navigation}: Props) => {
-  const rdv=[
-    {date: "32/03/3021"},
-    {date: "03/04/2022"},
-    {date: "01/01/2022"},
-    {date: "17/03/2022"},
-    {date: "12/03/2021"},
-  ]
+const Home = ({navigation, route}: Props) => {
   
+// console.log(route.name);
 
 
+  const consultations = useSelector((state: any) => state.consultations.consultationP)
  const [load, setLoad]= useState(false);
- const [rdvs, setrdvs]= useState(rdv);
+ const [rdvs, setrdvs]= useState(consultations.rdvs);
  const [inputVal, setinputVal]= useState('');
 
- const consultations = useSelector((state: any) => state.consultations.consultationP)
-//  console.log(consultations.rdvs);
- 
+  // console.log(consultations.rdvs.length);
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     Alert.alert("Hold on!", "Are you sure you want to go back?", [
+  //       {
+  //         text: "Cancel",
+  //         onPress: () => null,
+  //         style: "cancel"
+  //       },
+  //       { text: "YES", onPress: () => BackHandler.exitApp() }
+  //     ]);
+  //     return false;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, [route.name]);
+
+
+    
+     
+  
   
 const rdvFiltered = (text: string) =>{
   setinputVal(text)
   if(!text.length){
-    setrdvs(rdv)
+    setrdvs(consultations.rdvs)
 
   } else{
 
   //  setinputVal(text)
-   let newArr=  rdvs.filter(rdv => rdv.date.toLowerCase().includes(text.toLowerCase()))
+   let newArr=  consultations.rdvs.filter((rdv: any) => rdv.date_consultation.toLowerCase().includes(text.toLowerCase()))
    return setrdvs(newArr);
    
   }
@@ -144,10 +165,24 @@ const rdvFiltered = (text: string) =>{
         />
        </View>
       </View>
-      <TextLg style={{color:colors.primary, marginTop:12, marginLeft:12}}>Mes consultations</TextLg>
+      <FlexWrapper style={{width: "100%",marginTop:12 }}>
+      <TextLg style={{color:colors.primary, marginLeft:12}}>Mes consultations  </TextLg>
+      <FlexWrapper
+       style={{
+        minWidth: 50,
+        height: 30,
+        backgroundColor: colors.primary,
+        justifyContent: "center",
+        marginRight: width*0.04,
+        borderRadius: 5
+       }}>
+      <TextRegular style={{ color: colors.white}}> {rdvs.length}</TextRegular>
+
+      </FlexWrapper>
+      </FlexWrapper>
       <ScrollView 
       style={{width: width, paddingHorizontal: 12, paddingBottom: 30}}>
-       {consultations?.rdvs.map((rdv:any, index:any) => <Consultation key={index} rdv={rdv} navigation={navigation}/>)}
+       {rdvs?.map((rdv:any, index:any) => <Consultation key={index} rdv={rdv} navigation={navigation}/>)}
       
     </ScrollView>
 

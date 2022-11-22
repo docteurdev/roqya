@@ -1,10 +1,11 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useFonts } from  'expo-font';
  import  "./assets/fonts/PlusJakartaSans-Bold.ttf";
 import NavStack from './src/routes/NavStack';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
+import {colors} from './src/common/colors'
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
+      {/* <StatusBar barStyle={"dark-content"} backgroundColor={colors.inputborderColor} /> */}
       <NavStack/>
     </Provider>
   );
