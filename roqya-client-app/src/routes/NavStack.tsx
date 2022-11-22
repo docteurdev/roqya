@@ -6,13 +6,13 @@ import { Detail, FallPage, FallPage2, Home, Login, Register, RegisterSuite } fro
 import DrawerNav from './DrawerNav'
 
 export type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  RegisterSuite: undefined;
-  Home: undefined ;
-  Detail: undefined;
-  Fallpage: undefined;
-  Fallpage2: undefined;
+  Login: any;
+  Register: any;
+  RegisterSuite: any;
+  Home: any ;
+  Detail:{rdv: any};
+  Fallpage: any;
+  Fallpage2: any;
 };
 const Stack= createNativeStackNavigator<RootStackParamList>()
 

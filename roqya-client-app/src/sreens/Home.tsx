@@ -9,6 +9,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootDrawerParamsList } from '../routes/DrawerNav';
 import { RootStackParamList } from '../routes/NavStack';
 import { Loading } from '../components';
+import { useSelector } from 'react-redux';
 
 
 const {width, height}= Dimensions.get('window');
@@ -22,7 +23,7 @@ const Consultation= ({navigation, rdv}: PropsConslu) =>{
 
   return(
     <ConsultationStyled
-    onPress={() => navigation.navigate("Detail")}
+    onPress={() => navigation.navigate("Detail", {rdv: rdv})}
     style={{justifyContent: "space-between",  marginVertical: 7}}
     >
      <View
@@ -74,7 +75,9 @@ const Home = ({navigation}: Props) => {
  const [rdvs, setrdvs]= useState(rdv);
  const [inputVal, setinputVal]= useState('');
 
-
+ const consultations = useSelector((state: any) => state.consultations.consultationP)
+//  console.log(consultations.rdvs);
+ 
   
 const rdvFiltered = (text: string) =>{
   setinputVal(text)
@@ -144,7 +147,7 @@ const rdvFiltered = (text: string) =>{
       <TextLg style={{color:colors.primary, marginTop:12, marginLeft:12}}>Mes consultations</TextLg>
       <ScrollView 
       style={{width: width, paddingHorizontal: 12, paddingBottom: 30}}>
-       {rdvs?.map((rdv, index) => <Consultation key={index} rdv={rdv} navigation={navigation}/>)}
+       {consultations?.rdvs.map((rdv:any, index:any) => <Consultation key={index} rdv={rdv} navigation={navigation}/>)}
       
     </ScrollView>
 

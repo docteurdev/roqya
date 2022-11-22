@@ -109,10 +109,20 @@ export const ButtonLg= styled.Pressable`
 export const ConsulTileBx= styled.View`
  background-color: ${colors.gray};
  border-radius: 8px;
- width: 100px;
+ min-width: 100px;
  height: 30px;
  justify-content: center;
  align-items: center;
+`
+
+export const ConsulTileBxTitle= styled.View`
+ background-color: ${colors.gray};
+ border-radius: 8px;
+ min-width: 100px;
+ height: 30px;
+ justify-content: center;
+ align-items: flex-start;
+ padding-left: 6p
 `
 
 // divier

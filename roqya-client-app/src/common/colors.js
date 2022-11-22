@@ -9,5 +9,5 @@ export const colors= {
     textDanger:'#FF3838',
     primary: '#1D976C',
     secondary: '#1d976cb0',
-    warning: "#F1F381"
+    warning: "#F37335"
 }

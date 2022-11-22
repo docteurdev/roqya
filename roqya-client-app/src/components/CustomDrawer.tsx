@@ -8,25 +8,48 @@ import { Entypo, Feather, FontAwesome5, Ionicons, SimpleLineIcons } from '@expo/
 import { height } from '@mui/system'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootDrawerParamsList } from '../routes/DrawerNav'
+import { useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 type Props = NativeStackScreenProps<RootDrawerParamsList>
 
 
-
+type TypePatient= any
 const CustomDrawer: React.FC<Props> = ({ navigation, ...props }) => {
-    // console.log(props.navigation);
+   
+    // const [patient, setPatient]= useState<TypePatient>();
+    const patient = useSelector((state: any) => state.consultations.consultationP)
 
+    const getData = async () => {
+        try {
+          const jsonValue = await AsyncStorage.getItem('patient')
+          jsonValue != null ? JSON.parse(jsonValue) : null;
+        //   return setPatient(jsonValue)
+        } catch(e) {
+          // error reading value
+        }
+      }
+
+      useEffect(() => {
+        // getData()
+      }, [])
+
+      console.log("patient---------------");
+
+      if(patient){
+          console.log(patient);
+        
+      }
+      
     return (
         <DrawerContentScrollView {...props}
         >
-
-            {/* <DrawerItemList {...props} /> */}
-            {/* <DrawerItem label="loo" onPress={() => alert('okk')}> */}
-            {/* </DrawerItem> */}
+           { patient?
             <View
                 style={{ paddingHorizontal: 8 }}
             >
-
 
                 <RoundedMd
                     style={{ borderWidth: 1, overflow: 'hidden', width: 60, height: 60 }}
@@ -37,10 +60,15 @@ const CustomDrawer: React.FC<Props> = ({ navigation, ...props }) => {
                         resizeMode="cover"
                     />
                 </RoundedMd>
-                <TextMedium style={{ color: colors.textColor }}>Ziarah fathm</TextMedium>
-                <TextRegular>05 45 68 93</TextRegular>
-                <TextRegular>Prochain rendez-vous <TextLg style={{ color: colors.primary, fontSize: 15 }}> 21/12/2022</TextLg></TextRegular>
+                <TextMedium style={{ color: colors.textColor }}> {patient.nom} {patient.prenom} </TextMedium>
+                <TextRegular><Feather name="phone-call" size={20} color={colors.primary} /> <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.contact} </TextLg></TextRegular>
+                <TextRegular>Prochain rendez <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.contact} </TextLg></TextRegular>
                 <TextRegular>Nombre total de Rendez-vous <TextLg style={{ color: colors.primary, fontSize: 15 }}> 10 </TextLg></TextRegular>
+                <TextRegular>Situation matrimoniale <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.s_matrimoniale} </TextLg></TextRegular>
+
+                <TextRegular>Profession <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.profession} </TextLg></TextRegular>
+                <TextRegular>Religion <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.religion} </TextLg></TextRegular>
+                <TextRegular>Sexe <TextLg style={{ color: colors.primary, fontSize: 15 }}> {patient.sexe} </TextLg></TextRegular>
 
                 <Divider />
 
@@ -120,7 +148,7 @@ const CustomDrawer: React.FC<Props> = ({ navigation, ...props }) => {
                         </View>
                     </TouchableHighlight>
                 </ScrollView>
-            </View>
+            </View>: null}
         </DrawerContentScrollView>
     )
 }
