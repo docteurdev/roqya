@@ -6,6 +6,7 @@ import NavStack from './src/routes/NavStack';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import {colors} from './src/common/colors'
+import React, { useState } from 'react';
 
 export default function App() {
 
@@ -18,6 +19,8 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+ 
 
 
   return (

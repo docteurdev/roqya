@@ -1,5 +1,5 @@
 import { Alert, Dimensions, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCenters } from '../../redux/centres';
 import axios from 'axios';
 import { setConsultation } from '../../redux/consultation';
+import { AppContext } from '../../hooks/constextApi';
+import { login } from '../../redux/connexions';
 
 
 const { height, width } = Dimensions.get('window');
@@ -49,6 +51,11 @@ const Login = ({ navigation }: Props) => {
       // saving error
     }
   }
+
+  // const {logout,signup} = useContext(AppContext)
+
+  // console.log(logout);
+  
   // console.log(" is selcetedCentre-------------------");
 
   //    console.log(useSelector((state: any) => state.centres.selcetedCentre));
@@ -67,7 +74,6 @@ const Login = ({ navigation }: Props) => {
 
   const loginPatient = (user: any) => {
     setIsLoading(true)
-    // reset()
     //  console.log(user);
     let data= {
       centreId: allCentres.selcetedCentre.id,
@@ -81,13 +87,16 @@ const Login = ({ navigation }: Props) => {
      axios.post('http://192.168.43.35:3001/login/patient',data)
         .then(res =>{
              if(res){
+               
+               reset()
               storePatient(res.data)
               dispatch(setConsultation(res.data))
-               navigation.navigate('Home')
+              dispatch(login(res.data))
+              //  navigation.navigate("Home")
               setTimeout(() =>{
                 setIsLoading(false)
 
-              }, 3000)
+              }, 1500)
 
               //  console.log(res.data);
 
@@ -121,17 +130,17 @@ const Login = ({ navigation }: Props) => {
               >
                 <CenterList isModal={setShowModal} centres={allCentres.centres} />
               </Modal>
-              <FlexWrapper style={{ width: 200, marginVertical: width * 0.1 }} >
+              <FlexWrapper style={{ width: 200, marginTop: height * 0.05, marginBottom: height * 0.02}} >
                 {/* <RoundedMd>
             <Entypo name="chevron-small-left" size={24} color="black" />
         </RoundedMd> */}
                 <TextLg style={{ color: colors.primary }}>Connexion</TextLg>
               </FlexWrapper>
-              <ScrollView style={{ flex: 1, }}>
                 <View  >
-                  <TextXl >Salam Aleikoum  👋🏽</TextXl>
+                  <TextXl onPress={() => dispatch(login())} >Salam Aleikoum  👋🏽</TextXl>
                   <TextRegular style={{ color: colors.textLightColor }}>Entrez vos identifiants après votre inscription au centre</TextRegular>
                 </View>
+              <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1, }}>
 
                 <TextMedium style={{ marginVertical: 15 }}>Selectionner votre Centre</TextMedium>
                 <BtnBx
@@ -188,11 +197,11 @@ const Login = ({ navigation }: Props) => {
 
 
                 <FlexWrapper style={{ width: width - 20, marginTop: height * 0.05, }} >
-                  <FlexWrapper>
+                  {/* <FlexWrapper>
                     <MaterialIcons name="check-box" size={24} color={colors.primary} />
                     <TextMedium style={{ justifyContent: "center" }} > Se rappeler de moi </TextMedium>
 
-                  </FlexWrapper>
+                  </FlexWrapper> */}
 
                 </FlexWrapper>
                 {/* { console.log(errors)} */}

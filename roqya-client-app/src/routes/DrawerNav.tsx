@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
-import { Action, Cheick, Home, Localisation, Login, Rappels, Rencontre } from '../sreens'
+import { Action, Cheick, Detail, Home, Localisation, Login, Rappels, Rencontre } from '../sreens'
 import KeyboardAvoidingComponent from '../components/View'
 import FormContainer from '../components/container/FormContainer'
 import { CustomDrawer } from '../components'
@@ -13,13 +13,14 @@ export  type RootDrawerParamsList= {
   Rencontre: undefined,
   Cheick: undefined,
   Location: undefined,
-  // Login: undefined
+  Detail: undefined
 }
 
 const Drawer = createDrawerNavigator<RootDrawerParamsList>()
 
-const DrawerNav = () => {
+export const DrawerNav = () => {
   return (
+    
     <Drawer.Navigator
     useLegacyImplementation
     drawerContent={(props) => <CustomDrawer {...props}/>}
@@ -33,7 +34,7 @@ const DrawerNav = () => {
       <Drawer.Screen name='Rencontre' component={Rencontre}/>
       <Drawer.Screen name='Cheick' component={Cheick}/>
       <Drawer.Screen name='Location' component={Localisation}/>
-      {/* <Drawer.Screen name='Login' component={Login}/> */}
+      <Drawer.Screen name='Detail' component={Detail}/>
       
     </Drawer.Navigator>
   )

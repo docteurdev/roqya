@@ -8,10 +8,12 @@ import { Entypo, Feather, FontAwesome, FontAwesome5, Ionicons, MaterialIcons, Si
 import { height } from '@mui/system'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootDrawerParamsList } from '../routes/DrawerNav'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { AppContext } from '../hooks/constextApi'
+import { logout } from '../redux/connexions'
 
 type Props = NativeStackScreenProps<RootDrawerParamsList>
 
@@ -36,16 +38,22 @@ const CustomDrawer: React.FC<Props> = ({ navigation, ...props }) => {
         }
       }
 
+      const dispatch= useDispatch()
+
       const removePatient = async () => {
         try {
-          await AsyncStorage.removeItem('@MyApp_key')
-          navigation.navigate('Login')
+          await AsyncStorage.removeItem('patient');
+          dispatch(logout())
+          
         } catch(e) {
           // remove error
         }
       
         console.log('Done.')
       }
+
+//   const {logout,signup} = React.useContext(AppContext)
+
 
       useEffect(() => {
          getData()

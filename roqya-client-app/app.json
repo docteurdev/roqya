@@ -4,10 +4,10 @@
     "slug": "roqya-client-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/roqya.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/iphone-preview.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

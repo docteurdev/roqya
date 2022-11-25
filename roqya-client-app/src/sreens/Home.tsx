@@ -11,6 +11,7 @@ import { RootStackParamList } from '../routes/NavStack';
 import { Loading } from '../components';
 import { useSelector } from 'react-redux';
 import { useBackHandler } from '@react-native-community/hooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const {width, height}= Dimensions.get('window');
@@ -25,7 +26,7 @@ const Consultation= ({navigation, rdv}: PropsConslu) =>{
 
   return(
     <ConsultationStyled
-    onPress={() => navigation.push("Detail", {rdv: rdv})}
+    onPress={() => navigation.navigate("Detail", {rdv: rdv})}
     style={{justifyContent: "space-between",  marginVertical: 7}}
     >
      <View
@@ -69,37 +70,57 @@ const Home = ({navigation, route}: Props) => {
 
   const consultations = useSelector((state: any) => state.consultations.consultationP)
  const [load, setLoad]= useState(false);
- const [rdvs, setrdvs]= useState(consultations.rdvs);
+ const [patient, setPatient]= useState();
+ const [rdvs, setrdvs]= useState(patient?JSON.parse(patient).rdvs: consultations.rdvs);
  const [inputVal, setinputVal]= useState('');
 
   // console.log(consultations.rdvs.length);
 
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     Alert.alert("Hold on!", "Are you sure you want to go back?", [
-  //       {
-  //         text: "Cancel",
-  //         onPress: () => null,
-  //         style: "cancel"
-  //       },
-  //       { text: "YES", onPress: () => BackHandler.exitApp() }
-  //     ]);
-  //     return false;
-  //   };
+//   useEffect(() => {
+//     const backAction = () => {
+//         Alert.alert(" 👋🏽 ", "Voulez-vous quitter Digital Business Card?", [
+//             {
+//                 text: "NON",
+//                 onPress: () => null,
+//                 style: "cancel"
+//             },
+//             { text: "OUI", onPress: () => BackHandler.exitApp() }
+//         ]);
+//         return true;
+//     };
 
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
+//     const backHandler = BackHandler.addEventListener(
+//         "hardwareBackPress",
+//         backAction
+//     );
 
-  //   return () => backHandler.remove();
-  // }, [route.name]);
+//     return () => backHandler.remove();
+// }, []);
 
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('patient')
 
-    
-     
+    if(jsonValue!= null){
+      JSON.parse(jsonValue)
+      return setPatient(jsonValue)
+    }
+  //   jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch(e) {
+    // error reading value
+  }
+}
+
+useEffect(() =>{
+  getData()
+}, [])
+
+// if(patient){
+//   console.log(JSON.parse(patient).rdvs);
   
-  
+// }
+
+
 const rdvFiltered = (text: string) =>{
   setinputVal(text)
   if(!text.length){
@@ -176,7 +197,7 @@ const rdvFiltered = (text: string) =>{
         marginRight: width*0.04,
         borderRadius: 5
        }}>
-      <TextRegular style={{ color: colors.white}}> {rdvs.length}</TextRegular>
+      <TextRegular style={{ color: colors.white}}> {rdvs?.length}</TextRegular>
 
       </FlexWrapper>
       </FlexWrapper>
