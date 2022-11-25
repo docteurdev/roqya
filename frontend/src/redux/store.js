@@ -1,4 +1,5 @@
 import connexionSlice from './connexion';
+import messageSlice from './message';
 import patientsSlice from './patients';
 import personelSlice from './personnel';
 import { rdvSlice } from './rdv';
@@ -11,5 +12,6 @@ export const store = configureStore({
         personels: personelSlice.reducer,
         rendezVous: rdvSlice.reducer,
         login: connexionSlice.reducer,
+        message: messageSlice.reducer,
     }
 })

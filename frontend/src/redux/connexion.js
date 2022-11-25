@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
  const connexionSlice = createSlice({
     name: 'connexionSlice',
     initialState:{
-        centerConx: false,
+        centerConx: true,
         assitantConx: false
     },
     reducers:{

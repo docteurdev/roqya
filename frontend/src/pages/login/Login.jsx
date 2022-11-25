@@ -3,12 +3,14 @@ import { LockClosedIcon } from '@heroicons/react/20/solid';
 import logoImg from "../../assets/roqya.jpg"
 import * as yup  from 'yup';
 import {Formik} from "formik";
-import { Loading, RegisterInput } from '../../components';
+import { Loading, RegisterInput, Toast } from '../../components';
 import axios from 'axios';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPersonals } from '../../redux/personnel';
 import { getPatients } from '../../redux/patients';
+import { disconnectCenter } from '../../redux/connexion';
+import { alterShowMsg, setMessage } from '../../redux/message';
 
 function Login() {
 
@@ -22,7 +24,10 @@ function Login() {
 
   const centerInfos = JSON.parse(localStorage.getItem('centreInfo'));
  
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const showMsg= useSelector(state => state.message.showMsg) 
+
 
   useEffect(() => {
       if(centerInfos) return navigate('/board')
@@ -49,9 +54,7 @@ function Login() {
   })
 
 
- const ee = (e)=>{
-  e.preventDefault()
- }
+ 
   const register = (e ) =>{
     setLoading(true);
   e.preventDefault();
@@ -64,6 +67,18 @@ function Login() {
   axios.post('http://localhost:3001/login/centre', data)
   .then(resp =>{
     if(resp.data){
+      setLoading(false)
+      dispatch(disconnectCenter(false))
+      let msg={status: 200, message:"Le centre est connecté avec succèss"};
+                    
+      dispatch(setMessage(msg))
+      dispatch(alterShowMsg(true))
+
+       setTimeout(() =>{
+        dispatch(alterShowMsg(false))
+        
+     }, 3000)
+
       localStorage.setItem('centreInfo', JSON.stringify(resp.data.data))
       navigate('/board', {state: resp.data.data});
         setLoading(true);
@@ -72,7 +87,18 @@ function Login() {
     }
   })
   .catch(error =>{
-    console.log(error);
+    setLoading(false)
+    console.log(error.response.data);
+
+    let msg={status: 404, message: error.response.data};
+                    
+    dispatch(setMessage(msg))
+    dispatch(alterShowMsg(true))
+
+     setTimeout(() =>{
+      dispatch(alterShowMsg(false))
+      
+   }, 3000)
   })
     
   }
@@ -82,8 +108,10 @@ function Login() {
 
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      {showMsg? <Toast/>: null}
       <div className="w-full max-w-md space-y-8">
       {loading? <Loading/>: null}
+
         <div>
        <img
             className="mx-auto h-40 w-auto"

@@ -7,9 +7,12 @@ import { useDispatch } from 'react-redux';
 import { disconnectAssitant, setAssitantConx } from '../redux/connexion';
 import logo from '../assets/roqya.jpg'
 import Loading from './common/Loading';
+import { alterShowMsg, setMessage } from '../redux/message';
+import { hideMsg } from './common/context';
 
 
 function UserLogin({loadedDash}) {
+
 
     const [username, setUsername]= useState()
     const [password, setPassword]= useState();
@@ -17,10 +20,13 @@ function UserLogin({loadedDash}) {
 
     const dispatch= useDispatch();
 
+    const centreInfo = JSON.parse(localStorage.getItem('centreInfo'))
+
     const userLogin= (e) =>{
         setLoading(true)
         e.preventDefault()
         let data ={
+            centreId: centreInfo.id,
             userName: username,
             password: password
         }
@@ -28,19 +34,48 @@ function UserLogin({loadedDash}) {
         axios.post("http://localhost:3001/login/personels",data)
              .then(res =>{
                 if(res.data){
+                  // console.log(res.data);
                     // dispatch(setAssitantConx(res.data.data));
+
+                    let msg={status: 200, message:"Vous êtes connecté avec succèss"};
+                    
+                    dispatch(setMessage(msg))
+                    dispatch(alterShowMsg(true))
+
+                     setTimeout(() =>{
+                      dispatch(alterShowMsg(false))
+                      
+                   }, 3000)
+
+                   setTimeout(() =>{
+                     dispatch(disconnectAssitant(false))
+                    
+                 }, 3200)
+    
                     localStorage.setItem("userInfos", JSON.stringify(res.data.data));
-                    dispatch(disconnectAssitant(true))
+
                     setLoading(false)
                     loadedDash(true)
 
-                    // console.log(res.data.data);
                 }
              })
              .catch(error =>{
-                console.log(error);
+                // console.log(error.response.data);
+                let msg={status: 404, message:error.response.data}
+                dispatch(setMessage(msg))
+
+                dispatch(alterShowMsg(true))
+                     setTimeout(() =>{
+                      dispatch(alterShowMsg(false))
+                      
+                   }, 3000)
+
+                setLoading(false)
+                loadedDash(true)
              })
     }
+
+    
 
   return (
     <div className='flex justify-center items-center absolute top-0 left-0 w-full h-screen bg-white-200 z-10 backdrop-blur-lg ' >

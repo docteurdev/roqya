@@ -12,7 +12,8 @@ import {
   ChartPieIcon,
   ChevronDownIcon, ChevronUpIcon,
   UserPlusIcon,
-  ArrowLeftOnRectangleIcon
+  ArrowLeftOnRectangleIcon,
+  FaceFrownIcon
 } from "@heroicons/react/24/outline";
 import SmallCard from "../../components/card/SmallCard";
 import image from "../../assets/roqya.jpg";
@@ -22,9 +23,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getPersonals } from "../../redux/personnel";
 import { getPatients } from "../../redux/patients";
-import { AddPersonelForm } from "../../components";
+import { AddPersonelForm, Loading, Toast } from "../../components";
 import UserLogin from "../../components/UserLogin";
-import { disconnectAssitant } from "../../redux/connexion";
+import { disconnectAssitant, disconnectCenter } from "../../redux/connexion";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const user = {
@@ -72,34 +73,55 @@ function Dash() {
   const [stat, setStat] = useState(false);
 
   const [showRakis, setshowRakis] = useState(false);
-  const [userlogout, setUerslogout]= useState(true);
-  const [loadedDash, setloadedDash]= useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadedDash, setloadedDash] = useState(false);
 
   const userInfos = JSON.parse(localStorage.getItem('userInfos'));
   const centreInfo = JSON.parse(localStorage.getItem('centreInfo'));
-  const loaction= useLocation()
- 
+  const loaction = useLocation()
+  const navigate = useNavigate()
+   
+  if(!userInfos && ! centreInfo){
+    navigate('/')
+  }
   // console.log('----dash load == false-------');
-  //  console.log(loaction);
+  //  console.log(userInfos);
 
   const dispatch = useDispatch();
 
   const personnels = useSelector(state => state.personels);
+  const showMsg= useSelector(state => state.message.showMsg) 
 
-  const navigate = useNavigate()
 
-  const isDashLogged = useSelector(state => state.login.assitantConx);
-  
+
+  const isAssitConx = useSelector(state => state.login.assitantConx);
+  const isCenterConx = useSelector(state => state.login.centerConx);
 
   useEffect(() => {
-    if(!loaction.state.Employes.length){
-      setloadedDash(true)
+    
+
+    setTimeout(() =>{
+      setLoading(false)
+    }, 3000)
+
+    if (!loaction.state?.Employes.length) {
+      // setloadedDash(true)
+      dispatch(disconnectCenter(false))
+    }
+    if(!userInfos){
+      dispatch(disconnectAssitant(true))
     }
 
-  dispatch(getPersonals(loaction.state.id));
-  dispatch(getPatients(loaction.state.id))
-  
-}, [])
+
+    dispatch(getPersonals(loaction.state ? loaction.state.id : centreInfo.id));
+    dispatch(getPatients(loaction.state ? loaction.state.id : centreInfo.id));
+
+    return () =>{
+      // setloadedDash(false)
+      // console.log("compt demonté");
+    }
+
+  }, [])
 
 
 
@@ -109,8 +131,15 @@ function Dash() {
   return (
     <div className="min-h-full">
 
-      {!loaction.state.Employes.length || loadedDash=== false? <UserLogin loadedDash={setloadedDash} /> : null}
+      {loading? <Loading/>: null}
+      {showMsg? <Toast/>: null}
+      
+      {isCenterConx? <UserLogin loadedDash={setloadedDash} /> : null}
+      {isAssitConx? <UserLogin loadedDash={setloadedDash} /> : null}
+       
+      isAssitConx
 
+      {/* <UserLogin loadedDash={setloadedDash} /> */}
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal bg-white-100 backdrop-blur-sm">
         <div className="modal-box w-11/12 max-w-5xl ">
@@ -169,7 +198,7 @@ function Dash() {
                       <a
                         className=" flex bg-gray-900 w-15 h-15 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-full text-sm font-medium cursor-pointer"
                       >
-                        <UserPlusIcon className="h-6 w-6" />
+                        <FaceFrownIcon/>
                       </a>
                     </div>
                   </div>
@@ -209,13 +238,14 @@ function Dash() {
                           <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li className="text-sm font-semibold"><a>Modifier le centre</a></li>
                             <li
-                             onClick={() =>{
-                              localStorage.removeItem('centreInfo')
-                              localStorage.removeItem('userInfos');
-                              navigate('/')
+                              onClick={() => {
+                                localStorage.removeItem('centreInfo')
+                                localStorage.removeItem('userInfos');
+                                 dispatch(disconnectCenter(true))
+                                navigate('/')
 
-                             }}
-                            className="text-sm font-semibold"><a>Déconnecter le centre?</a></li>
+                              }}
+                              className="text-sm font-semibold"><a>Déconnecter le centre?</a></li>
                           </ul>
                         </Menu.Items>
                       </Transition>
@@ -329,16 +359,15 @@ function Dash() {
                 <ClipboardDocumentListIcon className="h-6 w-6" />
                 <p className="ml-2 text-xs font-semibold">{userInfos?.typeEmploye} {userInfos?.id} </p>
               </div>
-              <div className="flex mt-2">
+              {userInfos ? <div className="flex mt-2">
                 <ArrowLeftOnRectangleIcon className="h-6 w-6" />
                 <p
                   onClick={() => {
                     localStorage.removeItem('userInfos')
-                    dispatch(disconnectAssitant(false))
-                    setUerslogout(false)
+                    dispatch(disconnectAssitant(true))
                   }}
                   className="ml-2 text-xs font-semibold cursor-pointer">Déconnexion</p>
-              </div>
+              </div> : null}
             </div>
           </div>
           <div className="px-4 ">
@@ -370,7 +399,7 @@ function Dash() {
                   className="w-6 p-1 h-6 text-gray-800 rounded-full cursor-pointer m-2"
                 />}
             </div>
-            {showRakis? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
+            {showRakis ? <div className="w-full h-60 mt-2 bg-white  p-1 rounded-md ">
               {/* local component */}
               {
                 personnels?.filter(raki => raki.typeEmploye === "raki")
