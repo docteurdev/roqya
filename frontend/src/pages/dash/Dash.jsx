@@ -15,6 +15,9 @@ import {
   ArrowLeftOnRectangleIcon,
   FaceFrownIcon
 } from "@heroicons/react/24/outline";
+import {  BsYoutube } from "react-icons/bs";
+import {FaFacebookSquare, FaGlobe, FaStoreAlt} from "react-icons/fa";
+
 import SmallCard from "../../components/card/SmallCard";
 import image from "../../assets/roqya.jpg";
 import Patients from "../../components/Patients/Patients";
@@ -27,6 +30,7 @@ import { AddPersonelForm, Loading, Toast } from "../../components";
 import UserLogin from "../../components/UserLogin";
 import { disconnectAssitant, disconnectCenter } from "../../redux/connexion";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IconContext } from "react-icons/lib";
 
 const user = {
   name: "Tom Cook",
@@ -171,34 +175,55 @@ function Dash() {
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       <a className="flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer">
-                        <UsersIcon className="h-6 w-6" />
-                        <span> Patients </span>
+                        {/* <UsersIcon className="h-6 w-6" /> */}
+                        <IconContext.Provider value={{className:"h-6 w-6 mr-3"}}>
+                        <FaStoreAlt/>
+                        </IconContext.Provider>
+                        <span> Boutique </span>
                       </a>
                       <a
                         onClick={() => setStat(!stat)}
                         className="flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                       >
-                        <ChartPieIcon className="h-6 w-6" />
+                        <ChartPieIcon className="h-6 w-6 mr-3" />
                         <span> Statistiques </span>
                       </a>
                       <a
                         className=" flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                       >
-                        <UserIcon className="h-6 w-6" />
+                        <UserIcon className="h-6 w-6 mr-3" />
                         <label className='show-patient' htmlFor="my-modal" >Nouveau Patient</label>
 
                       </a>
                       <a
                         className=" flex bg-gray-900 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer"
                       >
-                        <UserPlusIcon className="h-6 w-6" />
+                        <UserPlusIcon className="h-6 w-6 mr-3" />
                         <label className='show-patient' htmlFor="new-personel" >Nouveau Personel</label>
 
                       </a>
                       <a
                         className=" flex bg-gray-900 w-15 h-15 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-full text-sm font-medium cursor-pointer"
                       >
-                        <FaceFrownIcon/>
+                        <IconContext.Provider value={{ color:'#FF0000', className:"h-4 w-4"}}>
+                          <BsYoutube/>
+                        </IconContext.Provider>
+                      </a>
+                      <a
+                        className=" flex bg-gray-900 w-15 h-15 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-full text-sm font-medium cursor-pointer"
+                      >
+                        <IconContext.Provider value={{ color:'#4267B2', className:"h-4 w-4"}}>
+
+                        <FaFacebookSquare />
+                        </IconContext.Provider>
+                      </a>
+                      <a
+                        className=" flex bg-gray-900 w-15 h-15 text-white text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-full text-sm font-medium cursor-pointer"
+                      >
+                        <IconContext.Provider value={{className:"h-4 w-4"}}>
+                        <FaGlobe/>
+
+                        </IconContext.Provider>
                       </a>
                     </div>
                   </div>
