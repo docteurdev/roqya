@@ -100,6 +100,7 @@ function Dash() {
 
   const isAssitConx = useSelector(state => state.login.assitantConx);
   const isCenterConx = useSelector(state => state.login.centerConx);
+  const updatePatient= useSelector(state => state.patients.updatePatient)
 
   useEffect(() => {
     
@@ -135,14 +136,12 @@ function Dash() {
   return (
     <div className="min-h-full">
 
-      {loading? <Loading/>: null}
+      {updatePatient? <Loading/>: null}
       {showMsg? <Toast/>: null}
       
       {isCenterConx? <UserLogin loadedDash={setloadedDash} /> : null}
       {isAssitConx? <UserLogin loadedDash={setloadedDash} /> : null}
        
-      isAssitConx
-
       {/* <UserLogin loadedDash={setloadedDash} /> */}
       <input type="checkbox" id="my-modal" className="modal-toggle" />
       <div className="modal bg-white-100 backdrop-blur-sm">

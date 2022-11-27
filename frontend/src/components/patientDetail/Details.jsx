@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
+import {RiLockPasswordFill} from "react-icons/ri";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import NewRdv from "../NewRdv";
 import Loading from "../common/Loading";
+import { IconContext } from "react-icons/lib";
 
 
 const RdvContentItem = ({ type, value }) => {
@@ -134,7 +136,9 @@ function Details() {
           </h2>
 
           {showInfo ? (
-            <div className="mt-16">
+            <div className="mt-6 ">
+                    <h2 className="text-lg font-semibold mb-4 "> <IconContext.Provider value={{ className: 'h-45 w-45 text-primary'}}>  <RiLockPasswordFill/></IconContext.Provider>   Code patient: <span class="text-secondary mr-8"> {patient.code_patient}</span> Mot de passe: <span class="text-secondary mr-8"> {patient.password}</span> Nom: <span class="text-secondary"> {patient.nom}</span></h2>
+                <div className="w-full h-2 bg-gray-300 mb-2 rounded-lg"/>
               <div className="detail-header  flex justify-between gap-2">
                 <div className="photo-box w-40 h-40 bg-primary rounded-md"></div>
                 <div className="">

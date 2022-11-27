@@ -109,7 +109,10 @@ function NewRdv({newrdv}) {
 
 
                 if (res.data) {
-                    dispatch(getPatients(centerId.id))
+                    setTimeout(() =>{
+                        dispatch(getPatients(centerId.id))
+
+                    }, 2000)
                     // loading(true)
                     newrdv(false)
                     dispatch(emptyedArr())

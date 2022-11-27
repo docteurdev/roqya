@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { TextArea } from ".";
-import { getPatients } from "../redux/patients";
+import { alterupdatePatient, getPatients } from "../redux/patients";
 import Input from "./input/Input";
 import {Loading} from "./index"
 
@@ -30,6 +30,7 @@ function AddPatientForm({ closePop }) {
     
     e.preventDefault();
     setLoad(true)
+    // dispatch(alterupdatePatient(true))
     const data = {
         centreId: centreInfo.id,
         patient: {
@@ -46,9 +47,15 @@ function AddPatientForm({ closePop }) {
     }
     axios.post("http://localhost:3001/api/roqya_ci/carnet_create", data)
          .then(res => {
+          console.log('====================================');
+          console.log(res.data);
+          console.log('====================================');
           if(res.data){
-            dispatch(getPatients(centreInfo.id));
             setLoad(false)
+            setTimeout(() =>{
+              dispatch(getPatients(centreInfo.id));
+
+            }, 2000)
             document.getElementById('my-modal').click();
           }
          } )
@@ -58,8 +65,8 @@ function AddPatientForm({ closePop }) {
 
     return (
       <>
+       {/* {load? <Loading/>: null} */}
       <div>
-       {load? <Loading/>: null}
         <form onSubmit={newPatient} >
           <div className="shadow sm:overflow-hidden sm:rounded-md">
             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
